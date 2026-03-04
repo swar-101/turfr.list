@@ -154,3 +154,13 @@ feat(match): add dynamic match page
 feat(player): allow users to join match
 feat(payment): add UPI payment link
 feat(payment): add payment confirmation
+
+
+Features
+
+1. Create Match
+
+2. Join Match
+
+Open match link -> Click Join -> Enter name -> Player appears in list
+
