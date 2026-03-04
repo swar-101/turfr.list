@@ -39,7 +39,7 @@ testing:
 5. What edge cases exist? 
 	- Downtime: When in downtime, organizer tracks manually/or offline until server is up. 
 	- Overbooking Problem: When two players are trying to book it together. Use logic to accept one. 
-	- Organizer can delete games, games once booked cannot be deleted, we soft delete 
+	- Organizer can delete games, games once booked cannot be deleted, we soft delete during deletions, and maintain states to ensure how it ended
 	
 
 ---
