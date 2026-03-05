@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import PlayerNameInput from "@/components/PlayerNameInput";
+import JoinSection from "@/components/JoinSection";
 
 export default async function MatchPage({ params, }: { params: Promise<{ id: string }>; }) {
 
@@ -37,15 +37,7 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
             <p>Max Players: {match.max_players}</p>
             <p>UPI ID: {match.upi_id}</p>
 
-            <form action="/api/join" method="POST">
-                <input type="hidden" name="match_id" value={id} />
-
-                <PlayerNameInput />
-
-                <button className="bg-black text-white p-2 rounded">
-                    Join Match
-                </button>
-            </form>
+            <JoinSection players={players || []} matchId={id} />
 
             <h2 className="text-xl font-semibold">⚽ Playing ({activePlayers.length} / {match.max_players})</h2>
 
