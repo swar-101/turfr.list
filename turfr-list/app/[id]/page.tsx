@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import PlayerNameInput from "@/components/PlayerNameInput";
 
 export default async function MatchPage({ params, }: { params: Promise<{ id: string }>; }) {
 
@@ -14,6 +15,9 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
         return <div>Match not found</div>;
     }
 
+    const upiLink = `upi://pay?pa=${match.upi_id}&pn=Turfr&am=${match.price_per_player}&cu=INR`;
+    // const upiLink = `upi://pay?pa=test@upi&pn=Turfr&am=100&cu=INR`;
+
     const { data: players } = await supabase
         .from("participation")
         .select("id, status, joined_at, players(name)")
@@ -22,8 +26,6 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
 
     const activePlayers = players?.filter(p => p.status == "active") || [];
     const waitlistPlayers = players?.filter(p => p.status == "waitlist") || [];
-
-
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-center gap-4">
@@ -46,11 +48,20 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
             </form>
 
             <h2 className="text-xl font-semibold">⚽ Playing ({activePlayers.length} / {match.max_players})</h2>
+
             <ul>
                 {activePlayers?.map((p) => (
                     <li key={p.id}>{p.players.name}</li>
                 ))}
             </ul>
+
+                <a
+                    href={upiLink}
+                    className="inline-block bg-green-600 text-white px-4 py-2 rounded mt-4"
+                >
+                    Pay via UPI
+                </a>
+
             <h2 className="text-xl font-semibold">⏳ Waitlist ({waitlistPlayers.length})</h2>
             <ul>
                 {waitlistPlayers?.map((p, index) => (
