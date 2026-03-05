@@ -40,7 +40,7 @@ testing:
 	- Downtime: When in downtime, organizer tracks manually/or offline until server is up. 
 	- Overbooking Problem: When two players are trying to book it together. Use logic to accept one. 
 	- Organizer can delete games, games once booked cannot be deleted, we soft delete during deletions, and maintain states to ensure how it ended
-	
+
 
 ---
 
@@ -162,5 +162,35 @@ Features
 
 2. Join Match
 
-Open match link -> Click Join -> Enter name -> Player appears in list
+    Open match link -> Click Join -> Enter name -> Player appears in list
 
+    -> Player enters name
+    -> Server checks match capacity
+    -> if slot available, status = active
+        else, status = waitlist
+    -> player inserted into participation
+    -> match page reloads
+    -> players shown in Playing / Waitlist sections
+
+
+
+3. Waitlist
+
+    waitlist position is derived state.
+
+
+
+
+Future improvements, not for beta v1.0
+
+Race condition handling
+Use Postgres transaction later.
+
+Realtime updates
+Supabase realtime / polling.
+
+Authentication
+Google login.
+
+Reliability scoring
+Soft signals only.
