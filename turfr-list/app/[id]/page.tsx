@@ -10,14 +10,20 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
         .eq("id", id)
         .single();
 
-    const { data: players } = await supabase
-        .from("participation")
-        .select("*")
-        .eq("match_id", id);
-
     if (!match) {
         return <div>Match not found</div>;
     }
+
+    const { data: players } = await supabase
+        .from("participation")
+        .select("id, status, joined_at, players(name)")
+        .eq("match_id", id)
+        .order("joined_at", { ascending: true });
+
+    const activePlayers = players?.filter(p => p.status == "active") || [];
+    const waitlistPlayers = players?.filter(p => p.status == "waitlist") || [];
+
+
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-center gap-4">
@@ -44,14 +50,20 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
                 </button>
             </form>
 
-            <h2 className="text-xl font-semibold">Players</h2>
-
+            <h2 className="text-xl font-semibold">⚽ Playing ({activePlayers.length} / {match.max_players})</h2>
             <ul>
-                {players?.map((p) => (
-                    <li key={p.id}>{p.player_id}</li>
+                {activePlayers?.map((p) => (
+                    <li key={p.id}>{p.players.name}</li>
                 ))}
             </ul>
-
+            <h2 className="text-xl font-semibold">⏳ Waitlist ({waitlistPlayers.length})</h2>
+            <ul>
+                {waitlistPlayers?.map((p, index) => (
+                    <li key={p.id}>
+                        #{index + 1} {p.players.name}
+                    </li>
+                ))}
+            </ul>
         </main>
     );
 }

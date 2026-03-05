@@ -28,3 +28,6 @@ create table participation (
                                joined_at timestamp default now(),
                                unique(match_id, player_id)
 );
+
+alter table participation
+    add column status text default 'active';
