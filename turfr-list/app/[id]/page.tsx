@@ -38,12 +38,7 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
             <form action="/api/join" method="POST">
                 <input type="hidden" name="match_id" value={id} />
 
-                <input
-                    name="name"
-                    placeholder="Your name"
-                    className="border p-2 rounded"
-                    required
-                />
+                <PlayerNameInput />
 
                 <button className="bg-black text-white p-2 rounded">
                     Join Match
