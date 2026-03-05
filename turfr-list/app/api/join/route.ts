@@ -2,48 +2,68 @@ import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-
     const formData = await req.formData();
 
-    const match_id = formData.get("match_id");
-    const name = formData.get("name");
+    const match_id = String(formData.get("match_id"));
+    const name = String(formData.get("name")).trim();
 
     if (!match_id || !name) {
-        return NextResponse.json({ error: "Invalid input"}, { status : 400 });
+        return NextResponse.json({ error: "Invalid input"}, { status: 400 });
     }
 
-    // fetch match capacity
+    // 1. Find existing player
+    let { data: player } = await supabase
+        .from("players")
+        .select("id")
+        .eq("name", name)
+        .maybeSingle();
+
+    // 2. Create player if not found
+    console.log("CREATING A NEW PLAYER")
+    if (!player) {
+        const { data: newPlayer } = await supabase
+            .from("players")
+            .insert([{ name }])
+            .select()
+            .single();
+
+        player = newPlayer;
+    }
+
+    // 3. Check existing participation
+    const { data: existing } = await supabase
+        .from("participation")
+        .select("id")
+        .eq("match_id", match_id)
+        .eq("player_id", player.id)
+        .maybeSingle();
+
+    if (existing) {
+        return NextResponse.redirect(req.headers.get("referer") || "/");
+    }
+
+    // 4. Fetch match capacity
     const { data: match } = await supabase
         .from("matches")
         .select("max_players")
         .eq("id", match_id)
         .single();
 
-    // count active players
+    // 5. Count active players
     const { count } = await supabase
         .from("participation")
-        .select("*", { count: "exact", head: true})
+        .select("*", { count: "exact", head: true })
         .eq("match_id", match_id)
         .eq("status", "active");
 
-    // decide status
+    // 6. Decide status
     let status = "active";
-    if (count != null && match && count >= match.max_players) {
+    if (count !== null && match && count >= match.max_players) {
         status = "waitlist";
     }
 
-    // create player
-    const { data: player, error: playerError } = await supabase
-        .from("players")
-        .insert([{ name }])
-        .select()
-        .single();
-    if (playerError) {
-        return NextResponse.json({ error: playerError.message }, { status: 500 });
-    }
-
-    // create participation
-    const { error: joinError } = await supabase
+    // 7. Insert participation
+    await supabase
         .from("participation")
         .insert([
             {
@@ -52,9 +72,6 @@ export async function POST(req: Request) {
                 status,
             },
         ]);
-    if (joinError) {
-        return NextResponse.json({ error: joinError.message }, { status: 500 });
-    }
 
     return NextResponse.redirect(req.headers.get("referer") || "/");
 }
