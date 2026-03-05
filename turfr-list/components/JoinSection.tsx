@@ -17,22 +17,25 @@ export default function JoinSection ({ players, matchId }: { players: PlayerPart
     const [playerName, setPlayerName] = useState<string | null>(null);
     const [alreadyJoined, setAlreadyJoined] = useState(false);
 
+    const [participationId, setParticipationId] = useState<string | null>(null);
+
     useEffect(() => {
         const stored = localStorage.getItem("turfr_player_name");
 
-        if(!stored) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (!stored) {
             setPlayerName("");
             return;
         }
 
         setPlayerName(stored);
 
-        const joined = players.some(
+        const participation = players.find(
             (p) => p.players.name.toLowerCase() === stored.toLowerCase()
         );
 
-        setAlreadyJoined(joined);
+        setAlreadyJoined(!!participation);
+        setParticipationId(participation?.id || null);
+
     }, [players]);
 
     if (playerName === null) {
@@ -41,8 +44,24 @@ export default function JoinSection ({ players, matchId }: { players: PlayerPart
 
     if (alreadyJoined) {
         return (
-            <div className ="text-green-500 font-semibold">
-                You joined as {playerName} ✅
+            <div className="flex flex-col items-center gap-4 mt-2">
+                <div className ="text-green-500 font-semibold">
+                    You joined as {playerName} ✅
+                </div>
+
+                <form action="/api/leave" method="POST">
+                    <input
+                        type="hidden"
+                        name="participation_id"
+                        value={participationId || ""}
+                    />
+
+                    <button type="submit"
+                            className="inline-flex items-center justify-center bg-red-500 text-white px-5 py-2 rounded-lg font-medium shadow hover:bg-red-600"
+                    >
+                        Leave Match
+                    </button>
+                </form>
             </div>
         );
     }
