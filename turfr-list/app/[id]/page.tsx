@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import JoinSection, { PlayerParticipation } from "@/components/JoinSection";
 import CopyLinkButton from "@/components/CopyLinkButton";
 import AutoRefresh from "@/components/AutoRefresh";
+import PlayerList from "@/components/PlayerList";
 
 export default async function MatchPage({ params, }: { params: Promise<{ id: string }>; }) {
 
@@ -75,20 +76,11 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
                         <span className="material-symbols-outlined text-zinc-400">
                             sports_soccer
                         </span>
-                        Playing ({activePlayers.length} / {match.max_players})
+                        Playing ({activePlayers.length}/{match.max_players})
                     </h2>
                     <div className="h-px bg-zinc-800 my-3"></div>
 
-            <ul className="mt-3 space-y-3">
-                {activePlayers?.map((p) => (
-                    <li
-                        key={p.id}
-                        className="px-3 py-2 rounded-md bg-zinc-800/70 border border-zinc-700/50 hover:bg-zinc-700 transition"
-                    >
-                        {p.playerName}
-                    </li>
-                ))}
-            </ul>
+                    <PlayerList players={activePlayers} />
 
                 </div>
 
@@ -110,17 +102,7 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
 
                     <div className="h-px bg-zinc-800 my-3"></div>
 
-
-                    <ul className="mt-3 space-y-3">
-                        {waitlistPlayers.map((p, index) => (
-                            <li
-                                key={p.id}
-                                className="px-3 py-2 rounded-md bg-zinc-800/70 border border-zinc-700/50 hover:bg-zinc-700 transition"
-                            >
-                                #{index + 1} {p.playerName}
-                            </li>
-                        ))}
-                    </ul>
+                    <PlayerList players={waitlistPlayers} />
 
                 </div>
 
