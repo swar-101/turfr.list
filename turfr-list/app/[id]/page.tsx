@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
-import JoinSection from "@/components/JoinSection";
+import JoinSection, { PlayerParticipation } from "@/components/JoinSection";
 import CopyLinkButton from "@/components/CopyLinkButton";
 
 export default async function MatchPage({ params, }: { params: Promise<{ id: string }>; }) {
@@ -24,12 +24,14 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
         .from("participation")
         .select("id, status, joined_at, players(name)")
         .eq("match_id", id)
-        .order("joined_at", { ascending: true });
+        .order("joined_at", { ascending: true }) as { data: PlayerParticipation[] | null};
+
+    console.log("PLAYERS DATA:", players);
 
     const normalizedPlayers =
         players?.map((p) => ({
             ...p,
-            playerName: p.players?.[0]?.name ?? "Unknown",
+            playerName: p.players?.name ?? "Unknown",
         })) || [];
 
     const activePlayers = normalizedPlayers.filter(p => p.status === "active");
@@ -81,7 +83,7 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
                         key={p.id}
                         className="px-3 py-2 rounded-md bg-zinc-800/70 border border-zinc-700/50 hover:bg-zinc-700 transition"
                     >
-                        {p.playerName || "Unknown"}
+                        {p.playerName}
                     </li>
                 ))}
             </ul>
@@ -98,8 +100,12 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
                 <div className="bg-zinc-900/60 backdrop-blur border border-zinc-800 rounded-xl p-5 shadow-lg">
 
                     <h2 className="text-lg font-semibold tracking-tight flex items-center gap-2">
-                        ⏳ Waitlist ({waitlistPlayers.length})
+                        <span className="material-symbols-outlined text-zinc-400">
+                            schedule
+                        </span>
+                        Waiting ({waitlistPlayers.length})
                     </h2>
+
                     <div className="h-px bg-zinc-800 my-3"></div>
 
 
@@ -109,7 +115,7 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
                                 key={p.id}
                                 className="px-3 py-2 rounded-md bg-zinc-800/70 border border-zinc-700/50 hover:bg-zinc-700 transition"
                             >
-                                #{index + 1} {p.playerName || "Unknown"}
+                                #{index + 1} {p.playerName}
                             </li>
                         ))}
                     </ul>

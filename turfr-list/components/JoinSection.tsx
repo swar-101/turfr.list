@@ -1,40 +1,43 @@
 "use client";
 
 import PlayerNameInput from "@/components/PlayerNameInput";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-type PlayerParticipation = {
-    id: string
-    status: string
-    joined_at: string
-    players: { name: string }[]
-}
+export type PlayerParticipation = {
+    id: string;
+    status: string;
+    joined_at: string;
+    players: { name: string };
+};
 
 export default function JoinSection({
                                         players,
                                         matchId,
                                     }: {
-    players: PlayerParticipation[]
-    matchId: string
+    players: PlayerParticipation[];
+    matchId: string;
 }) {
+    const [playerName, setPlayerName] = useState<string | null>(null);
 
-    const [playerName] = useState<string>(
-        typeof window !== "undefined"
-            ? localStorage.getItem("turfr_player_name") || ""
-            : ""
-    )
+    useEffect(() => {
+        const stored = localStorage.getItem("turfr_player_name");
+        setPlayerName(stored || "");
+    }, []);
+
+    // Prevent hydration mismatch
+    if (playerName === null) return null;
 
     const participation = players.find((p) => {
-        const name = p.players?.[0]?.name
+        const name = p.players?.name;
         return (
             playerName &&
             name &&
             name.toLowerCase() === playerName.toLowerCase()
-        )
-    })
+        );
+    });
 
-    const alreadyJoined = !!participation
-    const participationId = participation?.id || null
+    const alreadyJoined = !!participation;
+    const participationId = participation?.id || null;
 
     if (alreadyJoined) {
         return (
@@ -58,18 +61,20 @@ export default function JoinSection({
                     </button>
                 </form>
             </div>
-        )
+        );
     }
 
     return (
         <form action="/api/join" method="POST">
             <input type="hidden" name="match_id" value={matchId} />
+
             <PlayerNameInput />
 
-            <button className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-lg transition"
+            <button
+                className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-lg transition"
             >
                 Join Match
             </button>
         </form>
-    )
+    );
 }
