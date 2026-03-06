@@ -18,7 +18,7 @@ export default function Home() {
     async function createMatch(e: React.FormEvent) {
         e.preventDefault();
 
-        const pricePerPlayer = Number(totalCost) / Number(maxPlayers);
+        const pricePerPlayer = Math.ceil(Number(totalCost) / Number(maxPlayers));
 
         const { data, error } = await supabase
             .from("matches")
@@ -34,7 +34,7 @@ export default function Home() {
             .single();
 
         if (error) {
-            console.error(error);
+            console.error("Supabase error:", error.message, error.details, error.hint);
             alert("Error creating match");
             return;
         }
