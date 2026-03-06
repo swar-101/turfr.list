@@ -2,6 +2,7 @@ import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import JoinSection, { PlayerParticipation } from "@/components/JoinSection";
 import CopyLinkButton from "@/components/CopyLinkButton";
+import AutoRefresh from "@/components/AutoRefresh";
 
 export default async function MatchPage({ params, }: { params: Promise<{ id: string }>; }) {
 
@@ -41,6 +42,7 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
         <main className="min-h-screen flex justify-center px-4 py-10 bg-gradient-to-b from-zinc-950 via-black to-zinc-950">
 
             <div className="w-full max-w-md flex flex-col gap-6">
+                <AutoRefresh />
                 <header className="mb-4">
                     <Image
                         src="/turfr-logo.svg"
