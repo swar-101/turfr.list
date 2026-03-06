@@ -4,6 +4,7 @@ import JoinSection, { PlayerParticipation } from "@/components/JoinSection";
 import CopyLinkButton from "@/components/CopyLinkButton";
 import AutoRefresh from "@/components/AutoRefresh";
 import PlayerList from "@/components/PlayerList";
+import WaitList from "@/components/WaitList";
 
 export default async function MatchPage({ params, }: { params: Promise<{ id: string }>; }) {
 
@@ -102,7 +103,7 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
 
                     <div className="h-px bg-zinc-800 my-3"></div>
 
-                    <PlayerList players={waitlistPlayers} />
+                    <WaitList players={waitlistPlayers} />
 
                 </div>
 
