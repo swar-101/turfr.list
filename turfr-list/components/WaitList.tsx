@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {toast} from "sonner";
 
 export default function WaitList({ players } : { players: any[]}) {
     const [ storedName, setStoredName ] = useState<string | null>(null);
+    const [wasInWaitlist, setWasInWaitlist] = useState(false);
 
     useEffect(() => {
         const name = localStorage.getItem("turfr_player_name");
@@ -11,8 +13,15 @@ export default function WaitList({ players } : { players: any[]}) {
 
         if (!name) return;
 
+        const currentlyInWaitlist = players.some(
+            (p) => p.playerName.toLowerCase() === name.toLowerCase()
+        );
 
+        if (wasInWaitlist && !currentlyInWaitlist) {
+            toast.success("🎉 You're now playing!");
+        }
 
+        setWasInWaitlist(currentlyInWaitlist);
     }, [players]);
 
     const yourWaitlistIndex = players.findIndex(
