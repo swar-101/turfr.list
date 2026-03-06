@@ -134,15 +134,15 @@ checklist
 done: 
 	- basic project cleanup
 	- add Supabase client
+	- create db schema
+	- match creation
+	- join match logic
 
 pending: 
-	- create db schema
-	- google auth 
-	- match creation 
+	- google auth
 	- match page (core UI)
-	- join match logic 
-	- payment button (UPI deep link) 
-	- mark paid by organizer 
+	- payment button (UPI deep link)
+	- mark paid by organizer
 
 chore(repo): initialize turfr-list Next.js project and add README
 chore(app): remove default Next.js boilerplate
@@ -179,18 +179,34 @@ Features
     waitlist position is derived state.
 
 
+Versions
 
+v1.0 (current)
+    name-based identity
+    localStorage
+    fast join
 
-Future improvements, not for beta v1.0
+v1.5
+    prevent duplicate names
+    highlight your name
+    show waitlist position
+    team generation
 
-Race condition handling
-Use Postgres transaction later.
+Future improvements v2.0, not for beta v1.0
 
-Realtime updates
-Supabase realtime / polling.
+    Race condition handling
+    Use Postgres transaction later.
 
-Authentication
-Google login.
+    Realtime updates
+    Supabase realtime / polling.
 
-Reliability scoring
-Soft signals only.
+    Authentication
+    Google login.
+    User accounts.
+    True identity.
+    Payment tied to user.
+
+    Notifications
+
+    Reliability scoring
+    Soft signals only.
