@@ -14,18 +14,17 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="en" className="h-full">
         <head>
             <link
                 href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
                 rel="stylesheet"
             />
         </head>
-        <body
-            className={inter.className}
-        >
-            {children}
-            <Toaster />
+
+        <body className={`${inter.className} h-full overflow-hidden`}>
+        {children}
+        <Toaster />
         </body>
         </html>
     );

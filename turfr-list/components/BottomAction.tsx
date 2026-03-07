@@ -1,8 +1,3 @@
-
-// Join Button
-// Pay Button
-// Loading State / Disable State
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -19,28 +14,26 @@ export default function BottomAction({ match } : { match : any }) {
     * TODO: Check if we can create a message description while making the payment
     *       so that it's convenient for the organizer to track.
     * */
-    const upiLink = `upi://pay?pa${match.upi_id}&pn=Turfr&am${match.price_per_player}`;
+    const upiLink = `upi://pay?pa=${match.upi_id}&pn=Turfr&am=${match.price_per_player}&cu=INR`;
 
     return (
-        <div className="sticky bottom-0 border-t border-zinc-800 bg-black/80 backdrop-blur p-4">
-            {playerName
-                ? (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 border-t border-zinc-800 backdrop-blur">
+            <div className="max-w-md mx-auto p-4">
+
+                {playerName ? (
                     <a
                         href={upiLink}
                         className="block w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-xl text-center font-medium"
                     >
                         Pay via UPI
                     </a>
-                 )
-                : (
-                    <button
-                        className="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-medium"
-                    >
+                ) : (
+                    <button className="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-xl font-medium">
                         Join Match
                     </button>
-                )
-            }
-            {/* TODO: Understanding the states, and what happens after player joins and pays */}
+                )}
+
+            </div>
         </div>
     );
 }

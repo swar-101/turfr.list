@@ -39,23 +39,36 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
     const waitlistPlayers = normalizedPlayers.filter(p => p.status === "waitlist");
 
     return (
-        <main className="min-h-screen flex justify-center px-4 bg-gradient-to-b from-zinc-950 via-black to-zinc-950">
-            <div className="w-full max-w-md flex flex-col gap-2">
+        <main className="h-full flex flex-col bg-gradient-to-b from-zinc-950 via-black to-zinc-950">
 
-                <AutoRefresh />
+            <AutoRefresh />
 
+            {/* HEADER */}
+            <div className="flex-shrink-0">
                 <MatchHeader match={match} />
-
-                <CopyLinkButton />
-                <div className="flex-1 overflow-y-auto px-4 space-y-4">
-                    <JoinSection players={players || []} matchId={id} />
-                    <PlayingCard players={activePlayers} maxPlayers={match.max_players} />
-                    <WaitlistCard players={waitlistPlayers} />
-                </div>
-
-                <BottomAction match={match} />
-
             </div>
+
+            {/* SCROLL AREA */}
+            <div className="flex-1 overflow-y-auto">
+                <div className="max-w-md mx-auto px-4 space-y-4 pb-28">
+
+                    <CopyLinkButton />
+
+                    <JoinSection players={players || []} matchId={id} />
+
+                    <PlayingCard
+                        players={activePlayers}
+                        maxPlayers={match.max_players}
+                    />
+
+                    <WaitlistCard players={waitlistPlayers} />
+
+                </div>
+            </div>
+
+            {/* BOTTOM ACTION */}
+            <BottomAction match={match} />
+
         </main>
     );
 }

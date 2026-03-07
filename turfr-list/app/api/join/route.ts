@@ -1,6 +1,9 @@
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
+/*
+* TODO: Write a cleaner and safter join API
+* */
 export async function POST(req: Request) {
     const formData = await req.formData();
 
