@@ -10,7 +10,9 @@ export default function CopyLinkButton() {
                 alert("Match link copied!");
             }}
         >
-            Copy match link
+            <span className="material-symbols-outlined text-zinc-400">
+                share
+            </span>
         </button>
     );
 }
