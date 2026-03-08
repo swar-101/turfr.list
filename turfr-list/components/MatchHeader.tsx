@@ -26,7 +26,15 @@ function formatMatchTime(dateString: string) {
     return `${dayLabel} ${time}`;
 }
 
-export default function MatchHeader({match}: { match: any }) {
+export default function MatchHeader({
+    match,
+    onEdit,
+    onInfo
+}: {
+    match: any;
+    onEdit: ()=> void;
+    onInfo: ()=> void
+}) {
 
     const timeLabel = match.start_time ? formatMatchTime(match.start_time) : "TBD";
 
@@ -52,8 +60,8 @@ export default function MatchHeader({match}: { match: any }) {
             <Image
                 src="/turfr-logo.svg"
                 alt="Turfr logo"
-                width={52}
-                height={20}
+                width={72}
+                height={28}
                 className="mx-auto mb-1 opacity-90"
             />
 
@@ -66,7 +74,7 @@ export default function MatchHeader({match}: { match: any }) {
                     </span>
                 ) : (
                     <span className="flex items-center gap-1 text-zinc-500">
-                    <span className="material-symbols-outlined text-sm">schedule</span>
+                    <span className="material-symbols-outlined text-sm text-[18px]">schedule</span>
                     TBD
                     </span>
                 )}
@@ -84,7 +92,7 @@ export default function MatchHeader({match}: { match: any }) {
                     </a>
                 ) : (
                     <span className="flex items-center gap-1 text-zinc-500">
-                        <span className="material-symbols-outlined text-sm">location_on</span>
+                        <span className="material-symbols-outlined text-[18px]">location_on</span>
                         TBD
                     </span>
                 )}
@@ -92,19 +100,23 @@ export default function MatchHeader({match}: { match: any }) {
                 <span className="text-zinc-600">•</span>
 
                 {/* PRICE */}
+                <span className="material-symbols-outlined text-sm text-[18px]">person</span>
                 <span className="text-green-400 font-medium">
-                    <span className="material-symbols-outlined text-sm">currency_rupee</span>
-                    {match.price_per_player || "0"}
+                    ₹{match.price_per_player || "0"}
                 </span>
 
                 {/* EDIT BUTTON */}
                 {isOrganizer && (
-                    <button
+                    <button onClick={onEdit}
                         className="absolute right-3 top-2 text-zinc-400 hover:text-white"
                     >
                         <span className="material-symbols-outlined text-zinc-400">edit</span>
                     </button>
                 )}
+
+                <button onClick={onInfo}>
+                    <span className="material-symbols-outlined">info</span>
+                </button>
 
             </div>
         </div>

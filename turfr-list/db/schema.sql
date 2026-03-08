@@ -19,6 +19,10 @@ create table matches (
                          created_at timestamp default now()
 );
 
+alter table matches add column organizer_name text;
+alter table matches add column start_time timestamp;
+alter table matches add column end_time timestamp;
+
 -- Participation table
 create table participation (
                                id uuid primary key default gen_random_uuid(),

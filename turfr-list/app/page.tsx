@@ -20,10 +20,13 @@ export default function Home() {
             Number(totalCost) / Number(maxPlayers)
         );
 
+        const organizer = localStorage.getItem("turfr_player_name");
+
         const { data, error } = await supabase
             .from("matches")
             .insert([
                 {
+                    organizer_name: organizer,
                     title,
                     total_cost: Number(totalCost),
                     price_per_player: Number(pricePerPlayer),
