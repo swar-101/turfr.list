@@ -1,37 +1,112 @@
-// logo
-// Title
-// price
-// max players
+"use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
-export default function MatchHeader({ match } : { match : any} ) {
+function formatMatchTime(dateString: string) {
+    const matchDate = new Date(dateString);
+    const now = new Date();
+
+    const today = now.toDateString();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+
+    const matchDay = matchDate.toDateString();
+
+    let dayLabel = matchDate.toLocaleDateString("en-US", {weekday: "short"});
+
+    if (matchDay === today) dayLabel = "Today";
+    if (matchDay === tomorrow.toDateString()) dayLabel = "Tomorrow";
+
+    const time = matchDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+    return `${dayLabel} ${time}`;
+}
+
+export default function MatchHeader({match}: { match: any }) {
+
+    const timeLabel = match.start_time ? formatMatchTime(match.start_time) : "TBD";
+
+    const venueUrl = `https://maps.google.com/?q=${encodeURIComponent(match.venue)}`;
+
+    const isUrgent =
+        timeLabel.startsWith("Today") || timeLabel.startsWith("Tomorrow");
+
+    const [playerName, setPlayerName] = useState<string | null>(null);
+
+    useEffect(() => {
+        const name = localStorage.getItem("turfr_player_name");
+        setPlayerName(name);
+    }, []);
+
+    const isOrganizer =
+        playerName &&
+        match.organizer_name?.toLowerCase() === playerName.toLowerCase();
+
     return (
-        <div className="px-4 pt-6 pb-3 text-center">
+        <div className="px-4 py-2 border-b border-zinc-800 bg-black/80 backdrop-blur">
 
-            <header className="mb-4">
-                <Image
-                    src="/turfr-logo.svg"
-                    alt="Turfr logo"
-                    width={80}
-                    height={30}
-                    className="mx-auto"
-                />
-            </header>
+            <Image
+                src="/turfr-logo.svg"
+                alt="Turfr logo"
+                width={52}
+                height={20}
+                className="mx-auto mb-1 opacity-90"
+            />
 
-                <h1 className="text-xl font-semibold mb-2">
-                    {match.title}
-                </h1>
+            <div className="text-center text-sm flex items-center justify-center flex-wrap gap-1">
 
-                <div className="text-sm text-zinc-400 space-y-1">
-                    {/*<p>Total Cost: ₹{match.total_cost}</p>*/}
-                    <p>Venue: XYZ</p>
-                    <p>Per Head: ₹{match.price_per_player}</p>
-                    {/*<p>Max Players: {match.max_players}</p>*/}
-                    {/*<p>UPI ID: {match.upi_id}</p>*/}
+                {/* TIME */}
+                {match.start_time ? (
+                    <span className={isUrgent ? "text-yellow-400 font-medium" : "text-zinc-400"}>
+                    {timeLabel}
+                    </span>
+                ) : (
+                    <span className="flex items-center gap-1 text-zinc-500">
+                    <span className="material-symbols-outlined text-sm">schedule</span>
+                    TBD
+                    </span>
+                )}
 
-                    {/* TODO: Create a clickable card that reveals more information */}
-                </div>
+                <span className="text-zinc-600">•</span>
+
+                {/* VENUE */}
+                {match.venue ? (
+                    <a
+                        href={venueUrl}
+                        target="_blank"
+                        className="text-zinc-300 hover:text-white underline-offset-2 hover:underline"
+                    >
+                        {match.venue}
+                    </a>
+                ) : (
+                    <span className="flex items-center gap-1 text-zinc-500">
+                        <span className="material-symbols-outlined text-sm">location_on</span>
+                        TBD
+                    </span>
+                )}
+
+                <span className="text-zinc-600">•</span>
+
+                {/* PRICE */}
+                <span className="text-green-400 font-medium">
+                    <span className="material-symbols-outlined text-sm">currency_rupee</span>
+                    {match.price_per_player || "0"}
+                </span>
+
+                {/* EDIT BUTTON */}
+                {isOrganizer && (
+                    <button
+                        className="absolute right-3 top-2 text-zinc-400 hover:text-white"
+                    >
+                        <span className="material-symbols-outlined text-zinc-400">edit</span>
+                    </button>
+                )}
+
+            </div>
         </div>
     );
 }
