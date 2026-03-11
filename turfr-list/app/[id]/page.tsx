@@ -22,7 +22,7 @@ export default async function MatchPage({
     const { data: players } = await supabase
         .from("participation")
         .select("id, status, joined_at, players(name)")
-        .eq("match_id", id)
+        .eq("match_id", match.id)
         .order("joined_at", { ascending: true });
 
     const safePlayers= players ?? [];
