@@ -55,7 +55,7 @@ export default function Home() {
             return;
         }
 
-        router.push(`/${data.id}`);
+        router.push(`/${data.short_code}`);
     }
 
     return (
