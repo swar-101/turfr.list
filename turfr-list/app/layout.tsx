@@ -11,8 +11,8 @@ const plex = IBM_Plex_Sans({
 });
 
 export const metadata = {
-    title: "Turfr List",
-    description: "Match participation and payment tracker for Turfr",
+    title: "turfr",
+    description: "Join you turf match in seconds. No apps. Just the link.",
 };
 
 export default function RootLayout({
