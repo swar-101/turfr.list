@@ -12,7 +12,7 @@ const plex = IBM_Plex_Sans({
 
 export const metadata = {
     title: "turfr",
-    description: "Join you turf match in seconds. No apps. Just the link.",
+    description: "Join your turf match in seconds. No apps. Just the link.",
 };
 
 export default function RootLayout({
