@@ -40,9 +40,10 @@ export default function MatchPageClient({
     );
 
     return (
-    <main className="h-full flex flex-col bg-gradient-to-b from-zinc-950 via-black to-zinc-950">
+    <main className="h-full flex flex-col bg-gradient-to-b from-zinc-950 via-black to-zinc-950 text-zinc-200">
 
-      <AutoRefresh />
+
+        <AutoRefresh />
 
       {/* HEADER */}
       <div className="flex-shrink-0">
