@@ -1,7 +1,11 @@
 import { supabase } from "@/lib/supabase";
 import MatchPageClient from "@/components/MatchPageClient";
 
-export default async function MatchPage({ params, }: { params: Promise<{ id: string }>; }) {
+export default async function MatchPage({
+                                            params,
+                                        }: {
+    params: Promise<{ id: string }>;
+}) {
 
     const { id } = await params;
 
@@ -21,10 +25,12 @@ export default async function MatchPage({ params, }: { params: Promise<{ id: str
         .eq("match_id", id)
         .order("joined_at", { ascending: true });
 
+    const safePlayers= players ?? [];
+
     return (
         <MatchPageClient
             match={match}
-            players={players}
+            players={safePlayers}
             matchId={id}
         />
     );
