@@ -33,6 +33,10 @@ export async function POST(req: Request) {
         player = newPlayer;
     }
 
+    if (!player) {
+        return NextResponse.json({ error: "Player creation failed" }, { status: 500 });
+    }
+
     // 3. Check existing participation
     const { data: existing } = await supabase
         .from("participation")
