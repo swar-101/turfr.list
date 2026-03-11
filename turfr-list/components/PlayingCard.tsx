@@ -1,25 +1,59 @@
-
+"use client";
 import PlayerList from "@/components/PlayerList";
 
 export default function PlayingCard({
-        players,
-        maxPlayers,
-    } : {
-        players: any[];
-        maxPlayers: number;
-    }) {
-        return (
-            <div className="bg-zinc-900/60 backdrop-blur border border-zinc-800 rounded-xl p-5 shadow-lg">
-                <h2 className="flex items-center gap-2 text-lg font-semibold">
-                    <span className="material-symbols-outlined text-zinc-400">sports_soccer</span>
-                    Playing ({players.length}/{maxPlayers})
-                </h2>
+                                        players,
+                                        maxPlayers,
+                                    }: {
+    players: any[];
+    maxPlayers: number;
+}) {
+    const ratio = players.length / maxPlayers;
 
-                <div className="h-px bg-zinc-800 my-3"></div>
+    let barColor = "#22c55e";
+    if (ratio > 0.7) barColor = "#eab308";
+    if (ratio >= 1) barColor = "#ef4444";
 
-                <div className="max-h-[40vh] overflow-y-auto">
-                    <PlayerList players={players} />
+    return (
+        <div className="bg-black/90 backdrop-blur mt-2 mb-0">
+
+            {/* Header */}
+            <div className="flex items-center text-sm text-zinc-300 px-3 mb-1.5">
+                <span className="font-medium flex-1">Playing</span>
+
+                <span className="text-xs text-zinc-500 tracking-wide">
+                    {players.length}/{maxPlayers}
+                </span>
+            </div>
+
+            {/* Progress bar */}
+            <div className="px-3 mt-1 mb-2">
+                <div
+                    style={{
+                        height: "4px",
+                        background: "#1f1f23",
+                        borderRadius: "999px",
+                        overflow: "hidden",
+                    }}
+                >
+                    <div
+                        style={{
+                            height: "100%",
+                            width: `${Math.min((players.length / maxPlayers) * 100, 100)}%`,
+                            background: barColor,
+                            transition: "width 0.35s ease",
+                        }}
+                    />
                 </div>
             </div>
-        );
+
+            {/*<div className="h-px bg-zinc-800"></div>*/}
+
+            {/* Player list */}
+            <div className="">
+                <PlayerList players={players} />
+            </div>
+
+        </div>
+    );
 }

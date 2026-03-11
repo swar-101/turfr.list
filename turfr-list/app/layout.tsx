@@ -1,8 +1,15 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"]});
+
+const plex = IBM_Plex_Sans({
+    subsets: ["latin"],
+    weight: ["400","500","600"]
+});
+
 export const metadata = {
     title: "Turfr List",
     description: "Match participation and payment tracker for Turfr",

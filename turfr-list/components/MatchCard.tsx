@@ -1,5 +1,9 @@
+type MatchCardProps = {
+    match: any;
+    onClose: () => void;
+}
 
-export default function MatchCard({ match, onClose } : any) {
+export default function MatchCard({ match, onClose } : MatchCardProps) {
     return (
         <div className="bg-zinc-900/70 border border-zinc-800 rounded-xl p-4 space-y-2">
             <div className="text-sm text-zinc-400">
@@ -16,13 +20,17 @@ export default function MatchCard({ match, onClose } : any) {
                 {match.start_time || "TBD"} - {match.end_time || "TBD"}
             </div>
 
-            <div className="text-sm text-zinc-400 mt-3">
-                Per head
+            <div className="text-sm text-zinc-400 mt-3">Total cost</div>
+            <div className="text-white">
+                ₹{match.total_cost}
             </div>
+
+            <div className="text-sm text-zinc-400 mt-3">Per head</div>
             <div className="text-green-400 font-medium">
                 ₹{match.price_per_player}
             </div>
 
+            <div className="text-sm text-zinc-400 mt-3">Max players</div>
             <div className="text-white">
                 {match.max_players}
             </div>
