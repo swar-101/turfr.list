@@ -5,6 +5,17 @@ import Image from "next/image";
 import { supabase } from "./lib/supabase";
 import { useRouter } from "next/navigation";
 
+function generateShortCode(length = 5) {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let result = "";
+
+    for (let i = 0; i < length; i++) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    return result;
+}
+
 export default function Home() {
     const router = useRouter();
 
@@ -32,6 +43,7 @@ export default function Home() {
                     price_per_player: Number(pricePerPlayer),
                     max_players: Number(maxPlayers),
                     upi_id: upiId,
+                    short_code: generateShortCode(),
                 },
             ])
             .select()

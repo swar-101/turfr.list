@@ -24,6 +24,7 @@ alter table matches add column venue text;
 alter table matches add column start_time timestamp;
 alter table matches add column end_time timestamp;
 alter table matches add column turf_confirmed boolean default false;
+alter table matches add column short_code text unique;
 
 -- Participation table
 create table participation (

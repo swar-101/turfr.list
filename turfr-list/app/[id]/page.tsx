@@ -12,7 +12,7 @@ export default async function MatchPage({
     const { data: match } = await supabase
         .from("matches")
         .select("*")
-        .eq("id", id)
+        .eq("short_code", id.toUpperCase())
         .maybeSingle();
 
     if (!match) {
