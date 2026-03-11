@@ -20,8 +20,10 @@ create table matches (
 );
 
 alter table matches add column organizer_name text;
+alter table matches add column venue text;
 alter table matches add column start_time timestamp;
 alter table matches add column end_time timestamp;
+alter table matches add column turf_confirmed boolean default false;
 
 -- Participation table
 create table participation (

@@ -2,34 +2,55 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
-export default function EditMatch({ match, onClose } : any) {
+
+type EditMatchProps = {
+    match: any
+    onClose: () => void
+}
+
+export default function EditMatch({ match, onClose } : EditMatchProps) {
+
+    const router = useRouter();
+
     const [ venue, setVenue ] = useState(match.venue || "");
-
-    // const [ time, setTime ] = useState(match.start_time || "");
     const [ startTime, setStartTime ] = useState(match.start_time || "");
     const [ endTime, setEndTime ] = useState(match.end_time || "");
-
-
-    const [ price, setPrice ] = useState(match.price_per_player);
-    const [ maxPlayers, setMaxPlayers ] = useState(match.max_players);
+    const [ totalCost, setTotalCost ] = useState(match.total_cost || 0);
+    const [ maxPlayers, setMaxPlayers ] = useState(match.max_players || 0);
+    const [ turfConfirmed, setTurfConfirmed ] = useState(match.turf_confirmed || false);
 
     async function updateMatch() {
+        console.log("Saving match...");
 
-        await supabase
+        const pricePerPlayer =
+            maxPlayers > 0 ? Math.ceil(totalCost / maxPlayers) : 0;
+
+        const { data, error } = await supabase
             .from("matches")
             .update({
                 venue,
-                start_time: startTime,
-                end_time: endTime,
-                price_per_player: price,
-                max_players: maxPlayers
+                start_time: startTime || null,
+                end_time: endTime || null,
+                total_cost: totalCost,
+                price_per_player: pricePerPlayer,
+                max_players: maxPlayers,
+                turf_confirmed: turfConfirmed,
             })
-            .eq("id", match.id);
+            .eq("id", match.id)
+            .select();
 
-        window.location.reload();
+        if (error) {
+            console.error("SUPABASE ERROR:", error.message, error.details, error.hint);
+            return;
+        }
+
+        console.log("Updated row:", data);
+
+        router.refresh();
+        onClose();
     }
-
     return (
         <div>
             <input
@@ -57,8 +78,8 @@ export default function EditMatch({ match, onClose } : any) {
 
             <input
                 type="number"
-                value={price}
-                onChange={(e)=>setPrice(Number(e.target.value))}
+                value={totalCost}
+                onChange={(e)=>setTotalCost(Number(e.target.value))}
                 className="w-full p-2 bg-zinc-900 border border-zinc-700 rounded"
             />
 
@@ -70,7 +91,17 @@ export default function EditMatch({ match, onClose } : any) {
                 className="w-full p-2 bg-zinc-900 border border-zinc-700 rounded"
             />
 
+            <label className="flex items-center gap-2 text-zinc-300 mt-2">
+                <input
+                    type="checkbox"
+                    checked={turfConfirmed}
+                    onChange={(e) => setTurfConfirmed(e.target.checked)}
+                />
+                Turf booked
+            </label>
+
             <button
+                type="button"
                 onClick={updateMatch}
                 className="w-full bg-blue-600 py-2 rounded"
             >
