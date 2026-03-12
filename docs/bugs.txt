@@ -1,0 +1,4 @@
+
+
+- light mode text invisible
+- in prod the organizer tool does not show up
