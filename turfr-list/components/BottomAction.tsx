@@ -27,7 +27,9 @@ export default function BottomAction({ match, players } : any) {
     * TODO: Check if we can create a message description while making the payment
     *       so that it's convenient for the organizer to track.
     * */
-    const upiLink = `upi://pay?pa=${match.upi_id}&pn=Turfr&am=${match.price_per_player}&cu=INR`;
+    // const upiLink = `upi://pay?pa=${match.upi_id}&pn=Turfr&am=${match.price_per_player}&cu=INR`;
+    const upi_id = "swar.kunwar8@okhdfcbank"
+    const upiLink = `upi://pay?pa=${upi_id}&pn=Turfr&am=${match.price_per_player}&cu=INR`;
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 border-t border-zinc-800 backdrop-blur">
