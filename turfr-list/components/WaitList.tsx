@@ -44,12 +44,12 @@ export default function WaitList({ players } : { players: any[]}) {
                     return (
                         <li
                             key={p.id}
-                            className={`flex items-center px-3 h-9 text-sm transition-all duration-300 ease-out transform hover:translate-y-[-1px]
+                            className={`flex items-center px-3 text-sm transition-all duration-300 ease-out transform hover:translate-y-[-1px]
                             ${isYou
                                 ? "bg-blue-500/20 border-l-4 border-blue-400 text-blue-200"
                                 : i % 2 === 0
-                                    ? "bg-zinc-800/70 hover:bg-zinc-700"
-                                    : "bg-zinc-800/40 hover:bg-zinc-700"
+                                    ? "bg-zinc-900/60 hover:bg-zinc-700"
+                                    : "bg-black-90 hover:bg-zinc-700"
                             }`}
                         >
                             {/* LEFT SIDE */}
