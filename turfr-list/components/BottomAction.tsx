@@ -2,39 +2,37 @@
 
 import { useEffect, useState } from "react";
 
-export default function BottomAction({ match, players } : any) {
+export default function BottomAction({ match, players, onPayClick, onBackAction, mode,  } : any) {
 
-    // const [ playerName, setPlayerName ] = useState<string | null>(null);
     const [playerName, setPlayerName] = useState("");
+
+    useEffect(() => {
+        if (!match.turf_confirmed && mode === "payment") {
+            onBackAction();
+        }}, [match.turf_confirmed, mode, onBackAction]);
 
     useEffect(() => {
         const stored = localStorage.getItem("turfr_player_name");
         if (stored) setPlayerName(stored);
     }, []);
 
-    const participation = players?.find((p : any) => {
-        const name = p.players?.name;
-        return (
-            playerName &&
-            name &&
-            name.toLowerCase() === playerName.toLowerCase()
-        );
+    const participation = players?.find((p: any) => {
+        const name = p.players?.name?.trim().toLowerCase();
+        const current = playerName?.trim().toLowerCase();
+
+        return name && current && name === current;
     });
 
-    const alreadyJoined = !!participation;
+    const isOrganizer =
+        match.organizer_name?.toLowerCase() === playerName?.toLowerCase();
 
-    /*
-    * TODO: Check if we can create a message description while making the payment
-    *       so that it's convenient for the organizer to track.
-    * */
-    // const upiLink = `upi://pay?pa=${match.upi_id}&pn=Turfr&am=${match.price_per_player}&cu=INR`;
-    const upi_id = "swar.kunwar8@okhdfcbank"
-    const upiLink = `upi://pay?pa=${upi_id}&pn=Turfr&am=${match.price_per_player}&cu=INR`;
+    const alreadyJoined = !!participation;
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 border-t border-zinc-800 backdrop-blur">
             <div className="max-w-md mx-auto p-4">
 
+                {/* Event: Player is yet to join */}
                 {!alreadyJoined && (
                     <form action="/api/join" method="POST" className="flex gap-2">
                         <input type="hidden" name="match_id" value={match.id} />
@@ -58,19 +56,41 @@ export default function BottomAction({ match, players } : any) {
                     </form>
                 )}
 
+                {/* Event: Player joins but turf not booked */}
                 {alreadyJoined && !match.turf_confirmed && (
-                    <div className="text-center text-green-400 font-medium">
-                        ✓ You joined as {playerName}
+                    <div className="text-center text-yellow-400 font-medium">
+                        Waiting for organizer to confirm turf
                     </div>
                 )}
 
-                {alreadyJoined && match.turf_confirmed && (
-                    <a
-                        href={upiLink}
-                        className="block w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-xl text-center font-medium"
-                    >
-                        Pay via UPI
-                    </a>
+                {/* Event: Non-organizer Player joins and turf is booked */}
+                {alreadyJoined && match.turf_confirmed && !isOrganizer && (
+                    <>
+                        {mode === "list" && (
+                          <button
+                              onClick={onPayClick}
+                              className="w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-xl font-medium shadow-lg shadow-green-900/40"
+                          >
+                              Pay ₹{match.price_per_player}
+                          </button>
+                        )}
+
+                        {mode === "payment" && (
+                            <button
+                                onClick={onBackAction}
+                                className="w-full bg-green-700 hover:bg-green-600 text-white py-3 rounded-xl font-medium shadow-lg shadow-green-900/40"
+                            >
+                                I&#39;ve Paid
+                            </button>
+                        )}
+                    </>
+                )}
+
+                {/* Event: Organizer Player joins and turf is booked */}
+                {isOrganizer && match.turf_confirmed && (
+                    <div className="text-center text-blue-400 font-medium">
+                        Collect payments from players
+                    </div>
                 )}
             </div>
         </div>
