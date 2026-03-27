@@ -128,7 +128,7 @@ export default function MatchHeader({
 
             </div>
 
-            <div className="bg-zinc-900/60 px-4 py-1.5 text-zinc-300 text-sm flex items-center justify-center gap-1 whitespace-nowrap">
+            <div className="bg-zinc-900/80 px-4 py-0.5 text-zinc-300 text-sm flex items-center justify-center gap-1 whitespace-nowrap">
 
                 {/* TIME */}
                 {match.start_time ? (
@@ -168,11 +168,6 @@ export default function MatchHeader({
                 <span className="text-green-400 font-medium">
                     ₹{match.price_per_player || "0"}
                 </span>
-
-
-                {/*<button onClick={onInfo}>*/}
-                {/*    <span className="material-symbols-outlined">info</span>*/}
-                {/*</button>*/}
 
             </div>
         </div>

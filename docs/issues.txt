@@ -1,3 +1,68 @@
 
 
 - organizer starts from max players, what if they start from name (local storage cached)
+
+
+## ⚠️ One Subtle Upgrade — Player Reordering Logic
+
+### ❌ Current Approach (2 passes)
+
+```ts
+const sortedPlayers = [
+  ...players.filter(p => isYou(p)),
+  ...players.filter(p => !isYou(p))
+];
+```
+
+### Problems
+
+- Iterates the array twice → O(2n)
+- Not scalable if logic becomes more complex
+- Conceptually this is not “sorting” — it’s “promotion”
+
+---
+
+### ✅ Better Approach (Single Pass + Promotion)
+
+```ts
+const sortedPlayers = [];
+let you = null;
+
+for (const p of players) {
+  if (isYou(p)) {
+    you = p;
+  } else {
+    sortedPlayers.push(p);
+  }
+}
+
+if (you) sortedPlayers.unshift(you);
+```
+
+---
+
+### 🧠 Why This Is Better
+
+- Single pass → cleaner and more efficient
+- Matches intent → “promote current user”
+- Easier to extend (roles, priorities, etc.)
+
+---
+
+### ⚠️ Edge Case
+
+```ts
+if (!you) return players;
+```
+
+Avoid unnecessary work if user not in list
+
+---
+
+### 🧠 Mental Model
+
+- Data order = truth
+- UI order = projection
+
+You are not mutating data
+You are shaping the view

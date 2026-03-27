@@ -38,3 +38,20 @@ body {
     border-left: 4px solid #3b82f6;
     color: #dbeafe;
 }
+
+.player-list-you {
+    background-color: rgba(59, 130, 246, 0.21);
+    border-left: 4px solid #3b82f6;
+    color: #dbeafe;
+}
+
+.wait-list-you {
+    background-color: rgba(234, 179, 8, 0.45); /* softer yellow */
+    border-left: 4px solid #eab308;
+    color: #fef3c7;
+}
+
+@keyframes arrow-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+}

@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {prioritizeYou} from "@/util/prioritizeYou";
+
+
 
 export default function PlayerList({ players }: { players: any[] }) {
     const [storedName, setStoredName] = useState<string | null>(null);
@@ -10,51 +13,59 @@ export default function PlayerList({ players }: { players: any[] }) {
         setStoredName(name);
     }, []);
 
+    const sortedPlayers = prioritizeYou(players, storedName);
+
+    const youPlayer = players.find(
+        (p) =>
+            storedName?.trim().toLowerCase() ===
+            p.playerName?.trim().toLowerCase()
+    );
+
+    const otherPlayers = players.filter(
+        (p) =>
+            storedName?.trim().toLowerCase() !==
+            p.playerName?.trim().toLowerCase()
+    );
+
     return (
-        <ul className="mt-0 mb-0">
-            {players.map((p, i) => {
+        <ul className="mt-0 mb-0 pb-2">
 
-                const isYou =
-                    storedName?.trim().toLowerCase() === p.playerName?.trim().toLowerCase();
-                console.log("storedName:", storedName, "player:", p.playerName);
+            <ul className="mt-0 mb-0 pb-2">
 
-                return (
-                    <li
-                        key={p.id}
-                        className={`flex items-center px-3 text-sm transition-all duration-300 ease-out transform hover:translate-y-[-1px]
-  ${isYou
-                            ? "player-you"
-                            : i % 2 === 0
-                                ? "bg-zinc-900/60 hover:bg-zinc-700"
-                                : "bg-black-90 hover:bg-zinc-700"
-                        }`}
-                    >
-                        {/* LEFT SIDE */}
+                {/* 🔥 FIXED YOU */}
+                {youPlayer && (
+                    <li className="flex items-center px-3 py-0.3 text-sm player-you">
                         <div className="flex-1">
-                            {p.playerName} {isYou && "(You)"}
+                            {youPlayer.playerName}
+                            <span className="text-zinc-400 ml-1">(You)</span>
                         </div>
 
-                        {/* RIGHT SIDE */}
-                        {isYou && (
-                            <form action="/api/leave" method="POST" className="ml-3">
-                                <input type="hidden" name="participation_id" value={p.id} />
-                                {/*<button className="bg-red-500 hover:bg-red-400 text-white text-xs px-3 py-1 rounded-md font-semibold transition">*/}
-
-                                {/*    Leave*/}
-                                {/*</button>*/}
-                                <button
-                                    className="text-red-400 hover:text-red-300 transition flex items-center"
-                                >
-                                    <span className="material-symbols-outlined text-[16px] leading-none">
-                                      logout
-                                    </span>
-                                </button>
-
-                            </form>
-                        )}
+                        <form action="/api/leave" method="POST" className="ml-3">
+                            <input type="hidden" name="participation_id" value={youPlayer.id} />
+                            <button className="text-red-400 hover:text-red-300 transition flex items-center">
+          <span className="material-symbols-outlined text-[16px] leading-none">
+            logout
+          </span>
+                            </button>
+                        </form>
                     </li>
-                );
-            })}
+                )}
+
+                {/* 🔽 SCROLLABLE LIST */}
+                {otherPlayers.map((p, i) => (
+                    <li
+                        key={p.id}
+                        className={`flex items-center px-3 py-0.3 text-sm transition-all duration-300 ease-out transform hover:translate-y-[-1px]
+        ${i % 2 === 0
+                            ? "bg-zinc-900/50 hover:bg-zinc-800"
+                            : "bg-black/50 hover:bg-zinc-800"
+                        }`}
+                    >
+                        <div className="flex-1">{p.playerName}</div>
+                    </li>
+                ))}
+
+            </ul>
         </ul>
     );
 }

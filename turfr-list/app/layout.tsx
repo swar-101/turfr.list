@@ -29,7 +29,7 @@ export default function RootLayout({
             />
         </head>
 
-        <body className={`${inter.className} h-full overflow-hidden`}>
+        <body className={`${inter.className} h-full`}>
         {children}
         <Toaster />
         </body>
