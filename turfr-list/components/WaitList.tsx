@@ -6,6 +6,7 @@ import { useCurrentUser } from "@/components/match/hooks/useCurrentUser";
 import { isYou } from "@/components/match/utils/you";
 
 export default function WaitList({ players }: { players: any[] }) {
+
     const storedName = useCurrentUser();
     const [wasInWaitlist, setWasInWaitlist] = useState(false);
 
@@ -22,6 +23,7 @@ export default function WaitList({ players }: { players: any[] }) {
 
         setWasInWaitlist(currentlyInWaitlist);
     }, [players, storedName, wasInWaitlist]);
+
 
     return (
         <ul className="mt-0">
@@ -40,20 +42,27 @@ export default function WaitList({ players }: { players: any[] }) {
                                     : "bg-black/50 hover:bg-zinc-800"
                         }`}
                     >
-                        {/* LEFT SIDE */}
-                        <div className="flex-1">
-              <span
-                  className={`text-xs ${
-                      isCurrentUser ? "text-yellow-400" : "text-zinc-500"
-                  }`}
-              >
-                {i + 1}
-              </span>
-                            &nbsp;&nbsp;{p.playerName}
-                            {isCurrentUser && (
-                                <span className="text-yellow-200 ml-1">(You)</span>
-                            )}
+                        <div className="flex items-center gap-3 flex-1">
+
+                            {/* Number */}
+                            <span
+                                className={`w-6 text-xs text-right ${
+                                    isCurrentUser ? "text-yellow-400" : "text-zinc-500"
+                                }`}
+                            >
+                                {i + 1}
+                            </span>
+
+                            {/* Name */}
+                            <span>
+                                {p.playerName}
+                                {isCurrentUser && (
+                                    <span className="text-yellow-200 ml-1">(You)</span>
+                                )}
+                            </span>
+
                         </div>
+
 
                         {isCurrentUser && (
                             <form action="/api/leave" method="POST" className="ml-3">

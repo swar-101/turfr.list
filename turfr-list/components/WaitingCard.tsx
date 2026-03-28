@@ -10,6 +10,7 @@ import ScrollArrow from "@/components/match/components/ScrollArrow";
 
 export default function WaitingCard({ players }: { players: any[] }) {
 
+
     const [open, setOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,6 +29,7 @@ export default function WaitingCard({ players }: { players: any[] }) {
     const { atTop, atBottom, isScrollable } = useScrollIndicators(scrollRef, [players, open]);
     const [isYouInTopFade, setIsYouInTopFade] = useState(false);
     const [isYouInBottomFade, setIsYouInBottomFade] = useState(false);
+
 
     useEffect(() => {
         const el = scrollRef.current;
@@ -74,6 +76,11 @@ export default function WaitingCard({ players }: { players: any[] }) {
 
     }, [players, open, yourIndex]);
 
+    const ROW_HEIGHT = 20; // approximation
+    const PLAYING_CAP = 14;
+    const WAITING_CAP = 7;
+
+
     return (
         <div className="bg-black/90 py-0 flex flex-col">
 
@@ -112,7 +119,12 @@ export default function WaitingCard({ players }: { players: any[] }) {
                 <div className="relative">
                     <div
                         ref={scrollRef}
-                        className={`${open && players.length > 0 ? "max-h-[108px] overflow-y-auto" : "max-h-0 overflow-hidden"}`}
+                        style={{
+                            maxHeight: open
+                                ? `${WAITING_CAP * ROW_HEIGHT}px`
+                                : "0px"
+                        }}
+                        className={`${open && players.length > 0 ? "overflow-y-auto" : "overflow-hidden"}`}
                     >
                         <WaitList players={players} />
                     </div>

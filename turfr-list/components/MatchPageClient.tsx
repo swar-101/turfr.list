@@ -41,7 +41,7 @@ export default function MatchPageClient({
     const showWaitlist = waitlistPlayers.length > 0;
 
     return (
-        <main className="h-[100dvh] flex flex-col overflow-hidden text-zinc-300">
+        <main className="min-h-[100dvh] flex flex-col text-zinc-300">
             <div
                 className="flex flex-col flex-1 min-h-0 bg-black/70"
                 style={{
@@ -65,10 +65,10 @@ export default function MatchPageClient({
 
                     {/* SCROLL AREA */}
                     {/*<div className="flex-1 overflow-y-auto min-h-0">*/}
-                    <div className="flex-1 min-h-0 flex flex-col">
+                    <div className="flex-1 min-h-0 overflow-y-auto flex flex-col">
                         {/*<div className="max-w-md mx-auto px-4 space-y-4">*/}
                         {/*<div className="max-w-md mx-auto px-4 flex flex-col flex-1 min-h-0 pb-24">*/}
-                        <div className="w-full max-w-lg mx-auto px-4 flex flex-col flex-1 min-h-0 pb-[100px]">
+                        <div className="w-full max-w-lg mx-auto px-4 flex flex-col pb-[100px]">
 
                             {/* Edit View for Organizers only */}
                             {view === "edit" && (
@@ -86,12 +86,10 @@ export default function MatchPageClient({
                                 <div className="flex flex-col flex-1 min-h-0 gap-0">
 
                                     {/* Playing */}
-                                    <div className="max-h-[55vh] flex flex-col">
-                                        <PlayingCard
-                                            players={activePlayers}
-                                            maxPlayers={match.max_players}
-                                        />
-                                    </div>
+                                    <PlayingCard
+                                        players={activePlayers}
+                                        maxPlayers={match.max_players}
+                                    />
 
                                     {/* Waitlist */}
                                     {waitlistPlayers.length > 0 && (

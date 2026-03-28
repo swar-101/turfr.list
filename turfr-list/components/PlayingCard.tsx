@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import {useEffect, useRef} from "react";
 import { useScrollIndicators } from "@/components/match/hooks/useScrollIndicators";
 import { useCurrentUser } from "@/components/match/hooks/useCurrentUser";
 import {isYou} from "@/components/match/utils/you";
@@ -82,6 +82,21 @@ export default function PlayingCard({
 
     const { atTop, atBottom, isScrollable } = useScrollIndicators(scrollRef, [players]);
 
+    const storedName = useCurrentUser();
+
+    const hasYou = players.some(
+        (p) => isYou(p.playerName, storedName)
+    );
+
+    // const ROW_HEIGHT = 30;
+    const ROW_HEIGHT = 20; // same as waitlist (keep consistency)
+    const PLAYING_CAP = 14;
+    const visibleOthers = hasYou
+        ? PLAYING_CAP - 1
+        : PLAYING_CAP;
+    const FADE_HEIGHT = 24;
+
+
     return (
         <div className="bg-black/90 mt-1 mb-0 flex flex-col min-h-0">
 
@@ -124,9 +139,15 @@ export default function PlayingCard({
                 <PlayerListFixedYou players={players} />
 
                 {/* 🔽 Scroll zone */}
-                <div className="relative flex-1 min-h-0">
+                <div className="relative">
 
-                    <div ref={scrollRef} className="h-full overflow-y-auto pb-2">
+                    <div
+  ref={scrollRef}
+  style={{
+    maxHeight: `${visibleOthers * ROW_HEIGHT}px`
+  }}
+  className="overflow-y-auto"
+>
                         <PlayerListOthers players={players} />
                     </div>
 
