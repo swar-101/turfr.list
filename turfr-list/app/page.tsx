@@ -58,10 +58,23 @@ export default function Home() {
         router.push(`/${data.short_code}`);
     }
 
-    return (
-        <main className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-b from-zinc-950 via-black to-zinc-950">
+    // const
 
-            <div className="w-full max-w-sm mx-auto flex flex-col items-center gap-8 -translate-y-12">
+    const layout = "min-h-[100dvh] flex items-center justify-center px-4";
+    const card = "w-full bg-zinc-900/70 backdrop-blur border border-zinc-800 rounded-2xl p-6 shadow-lg";
+
+    return (
+        <main className={`${layout} bg-gradient-to-b from-zinc-950 via-black to-zinc-950`}>
+
+            {/* `-translate-y-12` moves UI up visually */}
+            <div className="
+                w-full
+                max-w-sm
+                mx-auto
+                flex flex-col items-center gap-8
+                -translate-y-12
+                "
+            >
 
                 {/* Logo */}
                 <Image
@@ -73,12 +86,10 @@ export default function Home() {
                 />
 
                 {/* Card */}
-                <form
-                    onSubmit={createMatch}
-                    className="w-full bg-zinc-900/70 backdrop-blur border border-zinc-800 rounded-2xl p-6 shadow-lg"
-                >
+                <form onSubmit={createMatch} className={card}>
                     <div className="flex flex-col gap-4">
 
+                        {/* TODO: Constrain Max players 22, Min players 2 */}
                         <input
                             placeholder="Max players"
                             type="number"

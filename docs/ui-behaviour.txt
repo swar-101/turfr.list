@@ -1,0 +1,14 @@
+
+PlayerList and Waitlist scrolling behavior
+
+Top:
+- no top fade
+- show bottom fade + ↓
+
+Middle:
+- show both fades
+- show ↓ and ↑
+
+Bottom:
+- show top fade + ↑
+- no bottom fade
