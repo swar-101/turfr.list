@@ -80,6 +80,7 @@ export default function WaitingCard({ players }: { players: any[] }) {
     const PLAYING_CAP = 14;
     const WAITING_CAP = 7;
 
+                    const shouldScroll = players.length > WAITING_CAP;
 
     return (
         <div className="bg-black/90 py-0 flex flex-col">
@@ -124,7 +125,7 @@ export default function WaitingCard({ players }: { players: any[] }) {
                                 ? `${WAITING_CAP * ROW_HEIGHT}px`
                                 : "0px"
                         }}
-                        className={`${open && players.length > 0 ? "overflow-y-auto" : "overflow-hidden"}`}
+                        className={`${open && shouldScroll ? "overflow-y-auto" : "overflow-hidden"}`}
                     >
                         <WaitList players={players} />
                     </div>
@@ -152,9 +153,9 @@ export default function WaitingCard({ players }: { players: any[] }) {
                         </>
                     )}
 
-                {open && isScrollable && !atTop && (
+                {open && shouldScroll && isScrollable && !atTop && (
                     <>
-                        <FadeOverlay position="top" />
+                        <FadeOverlay position="top" highlight={isYouInTopFade} />
                         <ScrollArrow
                             direction="up"
                             highlight={isYouInTopFade}
@@ -163,9 +164,9 @@ export default function WaitingCard({ players }: { players: any[] }) {
                     </>
                 )}
 
-                {open && isScrollable && !atBottom && (
+                {open && shouldScroll && isScrollable && !atBottom && (
                     <>
-                        <FadeOverlay position="bottom" />
+                        <FadeOverlay position="bottom" highlight={isYouInBottomFade} />
                         <ScrollArrow
                             direction="down"
                             highlight={isYouInBottomFade}
