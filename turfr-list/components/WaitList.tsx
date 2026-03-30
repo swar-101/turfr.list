@@ -6,6 +6,7 @@ import { useCurrentUser } from "@/components/match/hooks/useCurrentUser";
 import { isYou } from "@/components/match/utils/you";
 
 export default function WaitList({ players }: { players: any[] }) {
+    const WAITLIST_YOU_CLASS = "bg-yellow-400/40 border-l-4 border-yellow-400 text-yellow-100";
 
     const storedName = useCurrentUser();
     const [wasInWaitlist, setWasInWaitlist] = useState(false);
@@ -36,7 +37,7 @@ export default function WaitList({ players }: { players: any[] }) {
                         className={`flex items-center px-3 py-0.3 text-sm transition-all duration-300 ease-out transform hover:translate-y-[-1px]
             ${
                             isCurrentUser
-                                ? "wait-list-you"
+                                ? WAITLIST_YOU_CLASS
                                 : i % 2 === 0
                                     ? "bg-zinc-900/60 hover:bg-zinc-800"
                                     : "bg-black/50 hover:bg-zinc-800"

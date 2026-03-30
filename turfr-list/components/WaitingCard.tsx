@@ -10,6 +10,8 @@ import ScrollArrow from "@/components/match/components/ScrollArrow";
 
 export default function WaitingCard({ players }: { players: any[] }) {
 
+    const WAITLIST_YOU_CLASS =
+        "bg-yellow-400/40 border-l-4 border-yellow-400 text-yellow-100";
 
     const [open, setOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -122,7 +124,9 @@ export default function WaitingCard({ players }: { players: any[] }) {
                         ref={scrollRef}
                         style={{
                             maxHeight: open
-                                ? `${WAITING_CAP * ROW_HEIGHT}px`
+                                ? shouldScroll
+                                    ? `${WAITING_CAP * ROW_HEIGHT}px`
+                                    : "none"
                                 : "0px"
                         }}
                         className={`${open && shouldScroll ? "overflow-y-auto" : "overflow-hidden"}`}
@@ -134,7 +138,7 @@ export default function WaitingCard({ players }: { players: any[] }) {
                     {!open && you && (
                         <>
                             {/*<div className="px-3 py-0.3 text-sm bg-yellow-500/20 border-l-4 border-yellow-400 text-yellow-200">*/}
-                            <div className="flex items-center px-3 py-0.3 text-sm wait-list-you">
+                            <div className={`flex items-center px-3 py-0.3 text-sm  ${WAITLIST_YOU_CLASS}`}>
                                 <div className="flex-1">
                                     #{yourIndex + 1} {you.playerName}
                                     <span className="text-yellow-200 ml-1">(You)</span>
