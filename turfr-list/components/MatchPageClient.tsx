@@ -10,6 +10,7 @@ import WaitingCard from "@/components/WaitingCard";
 import EditMatch from "@/components/EditMatch";
 import MatchCard from "@/components/MatchCard";
 import PaymentSection from "@/components/PaymentSection";
+import { Modal } from "@mui/material";
 
 type MatchPageClientProps = {
   match: any;
@@ -74,7 +75,14 @@ export default function MatchPageClient({
 
             {/* Info View for Match Details */}
             {view === "info" && (
-              <MatchCard match={match} onClose={() => setView("default")} />
+              <Modal
+                open={["default", "edit", "info"].includes(view)}
+                onClose={() => setView("default")}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <MatchCard match={match} onClose={() => setView("default")} />
+              </Modal>
             )}
 
             {/*// TODO: Optimize player prioritization logic (single-pass promotion instead of filter-based split)*/}
