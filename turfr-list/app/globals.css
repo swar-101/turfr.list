@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+html, body {
+    height: 100%;
+    /*overflow: hidden;*/
+}
+
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
+}
+
+body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.link-venue {
+    color: #60a5fa;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.link-venue:active {
+    opacity: 0.2;
+}
+
+.player-you {
+    background-color: rgba(59, 130, 246, 0.21); /* blue tint */
+    border-left: 4px solid #3b82f6;
+    color: #dbeafe;
+}
+
+.player-list-you {
+    background-color: rgba(59, 130, 246, 0.21);
+    border-left: 4px solid #3b82f6;
+    color: #dbeafe;
+}
+
+.wait-list-you {
+    background-color: rgba(234, 179, 8, 0.45); /* softer yellow */
+    border-left: 4px solid #eab308;
+    color: #fef3c7;
+}
+
+@keyframes arrow-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+}
