@@ -1,5 +1,12 @@
 # turfr™
 
+## Vision 
+
+- turfr-list → match coordination
+- turfr-body → player health & injury tracking (planned)
+
+Built with a long-term vision of interconnected systems.
+
 --- 
 ## Trademark Notice
 
