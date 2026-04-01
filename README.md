@@ -16,9 +16,13 @@ While the project was initiated by Swar, it is designed to grow through collecti
 Built with a long-term vision of interconnected systems.
 
 --- 
+## License
+
+This project is licensed under the MIT License.
+
 ## Trademark Notice
 
-Turfr and the Turfr logo are trademarks of Swar Kunwar.
+turfr and the turfr logo are trademarks of Swar Kunwar.
 
-The AGPL-3.0 license applies only to the source code.
-Forks must not use the turf™ name or branding without permission.
+This license does not grant permission to use the turfr name, logo, or branding.
+Forks and derivatives must not use the turfr™ branding without explicit permission.
