@@ -1,5 +1,13 @@
 # turfr™
 
+## Philosophy
+
+turfr™ is built as a community-driven system.
+
+The goal is to create a platform where contributors can collaborate on solving real problems in community sports, while maintaining high standards of system design and code quality.
+
+While the project was initiated by Swar, it is designed to grow through collective contribution and shared ownership of ideas.
+
 ## Vision 
 
 - turfr-list → match coordination
