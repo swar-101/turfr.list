@@ -2,7 +2,6 @@
 
 html, body {
     height: 100%;
-    /*overflow: hidden;*/
 }
 
 :root {
@@ -33,12 +32,6 @@ body {
     opacity: 0.2;
 }
 
-.player-you {
-    background-color: rgba(59, 130, 246, 0.21); /* blue tint */
-    border-left: 4px solid #3b82f6;
-    color: #dbeafe;
-}
-
 .player-list-you {
     background-color: rgba(59, 130, 246, 0.21);
     border-left: 4px solid #3b82f6;
@@ -46,7 +39,7 @@ body {
 }
 
 .wait-list-you {
-    background-color: rgba(234, 179, 8, 0.45); /* softer yellow */
+    background-color: rgba(234, 179, 8, 0.45);
     border-left: 4px solid #eab308;
     color: #fef3c7;
 }
