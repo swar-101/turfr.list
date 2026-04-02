@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { SubmitEvent } from "react";
 import Image from "next/image";
 import { supabase } from "./lib/supabase";
 import { useRouter } from "next/navigation";
@@ -19,12 +20,12 @@ function generateShortCode(length = 5) {
 export default function Home() {
     const router = useRouter();
 
-    const [title, setTitle] = useState("");
-    const [totalCost, setCost] = useState("");
+    const [title] = useState("");
+    const [totalCost] = useState("");
     const [maxPlayers, setMaxPlayers] = useState("");
-    const [upiId, setUpiId] = useState("");
+    const [upiId] = useState("");
 
-    async function createMatch(e: React.FormEvent) {
+    async function createMatch(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const pricePerPlayer = Math.ceil(
@@ -58,7 +59,6 @@ export default function Home() {
         router.push(`/${data.short_code}`);
     }
 
-    // const
 
     const layout = "min-h-[100dvh] flex items-center justify-center px-4";
     const card = "w-full bg-zinc-900/70 backdrop-blur border border-zinc-800 rounded-2xl p-6 shadow-lg";
@@ -108,7 +108,6 @@ export default function Home() {
 
                     </div>
                 </form>
-
             </div>
         </main>
     );
