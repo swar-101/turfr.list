@@ -4,13 +4,22 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
+type Match = {
+    id: string;
+    venue?: string;
+    start_time?: string;
+    end_time?: string;
+    total_cost: number;
+    max_players: number;
+    turf_confirmed: boolean;
+};
 
 type EditMatchProps = {
-    match: any
-    onClose: () => void
+    match: Match
+    onCloseAction: () => void
 }
 
-export default function EditMatch({ match, onClose } : EditMatchProps) {
+export default function EditMatch({ match, onCloseAction } : EditMatchProps) {
 
     const router = useRouter();
 
@@ -49,7 +58,7 @@ export default function EditMatch({ match, onClose } : EditMatchProps) {
         console.log("Updated row:", data);
 
         router.refresh();
-        onClose();
+        onCloseAction();
     }
     return (
         <div>
@@ -109,7 +118,7 @@ export default function EditMatch({ match, onClose } : EditMatchProps) {
             </button>
 
             <button
-                onClick={onClose}
+                onClick={onCloseAction}
                 className="w-full bg-zinc-700 py-2 rounded mt-3"
             >
                 Close
