@@ -7,7 +7,8 @@ export function useCurrentUser() {
 
     useEffect(() => {
         const stored = localStorage.getItem("turfr_player_name");
-        setName(stored);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setName(stored || "");
     }, []);
 
     return name;
