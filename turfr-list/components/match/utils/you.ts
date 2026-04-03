@@ -9,11 +9,3 @@ export function isYou(
         currentUser.trim().toLowerCase()
     );
 }
-
-export function getYouPlayer(players: any[], currentUserName: string | null) {
-    return players.find((p) => isYou(p.playerName, currentUserName));
-}
-
-export function getYouPlayerIndex(players: any[], currentUserName: string | null) {
-    return players.findIndex((p) => isYou(p.playerName, currentUserName));
-}
