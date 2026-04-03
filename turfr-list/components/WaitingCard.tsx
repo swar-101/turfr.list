@@ -28,7 +28,7 @@ export default function WaitingCard({ players }: { players: any[] }) {
             isYou(p.playerName, storedName)
     );
 
-    const { atTop, atBottom, isScrollable } = useScrollIndicators(scrollRef, [players, open]);
+    const { atTop, atBottom, isScrollable } = useScrollIndicators(scrollRef, players);
     const [isYouInTopFade, setIsYouInTopFade] = useState(false);
     const [isYouInBottomFade, setIsYouInBottomFade] = useState(false);
 

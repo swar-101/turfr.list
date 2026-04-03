@@ -10,8 +10,9 @@ type ScrollIndicators = {
 
 export function useScrollIndicators(
     ref: RefObject<HTMLElement | null>,
-    deps: any[] = []
+    trigger?: unknown
 ): ScrollIndicators {
+
     const [atTop, setAtTop] = useState(true);
     const [atBottom, setAtBottom] = useState(false);
     const [isScrollable, setIsScrollable] = useState(false);
@@ -34,7 +35,7 @@ export function useScrollIndicators(
 
         el.addEventListener("scroll", check);
         return () => el.removeEventListener("scroll", check);
-    }, deps);
+    }, [ref , trigger]);
 
     return { atTop, atBottom, isScrollable };
 }

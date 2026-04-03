@@ -80,7 +80,7 @@ export default function PlayingCard({
 
     const scrollRef = useRef<HTMLDivElement | null>(null);
 
-    const { atTop, atBottom, isScrollable } = useScrollIndicators(scrollRef, [players]);
+    const { atTop, atBottom, isScrollable } = useScrollIndicators(scrollRef, players);
 
     const storedName = useCurrentUser();
 
