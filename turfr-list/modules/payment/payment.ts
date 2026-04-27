@@ -1,8 +1,9 @@
 export type PaymentIntent = {
-    pa: string;
-    pn: string;
-    am: string;
-    tn: string;
+    pa: string;      // Mandatory (The UPI ID)
+    pn?: string;     // Optional (The Payee Name)
+    am?: string;     // Optional (The Amount)
+    tn?: string;     // Optional (The Note)
+    tr?: string;     // Optional (The Transaction Ref)
 };
 
 export function getDevice() {
@@ -16,8 +17,18 @@ export function getDevice() {
 }
 
 export function buildUpiLink(intent: PaymentIntent, type: string, device: string) {
-    // 1. Construct the query string without the leading '?'
-    const upiParams = `pa=${intent.pa}&pn=${encodeURIComponent(intent.pn)}&am=${intent.am}&tn=${encodeURIComponent(intent.tn)}&cu=INR`;
+    // Only include params that actually have values
+    const parts = [
+        `pa=${intent.pa}`,
+        intent.pn ? `pn=${encodeURIComponent(intent.pn)}` : '',
+        intent.am ? `am=${intent.am}` : '',
+        intent.tn ? `tn=${encodeURIComponent(intent.tn)}` : '',
+        intent.tr ? `tr=${intent.tr}` : '',
+        `cu=INR`,
+        `mode=02` // Trusted intent flag
+    ].filter(Boolean); // Removes the empty strings
+
+    const upiParams = parts.join('&');
 
     if (device === "android" && type !== "generic") {
         const packages: Record<string, string> = {
@@ -27,15 +38,13 @@ export function buildUpiLink(intent: PaymentIntent, type: string, device: string
         };
         const pkg = packages[type as keyof typeof packages];
 
-        // REMOVE the '?' from intent://pay? and move it into the params
-        // This is the most compatible format for Android Chrome
         return `intent://pay?${upiParams}#Intent;scheme=upi;package=${pkg};S.browser_fallback_url=https://play.google.com/store/apps/details?id=${pkg};end`;
     }
 
-    // 2. For iOS/Fallback, resolveScheme usually ends in '?'
     const scheme = resolveScheme(type, device);
     return `${scheme}${upiParams}`;
 }
+
 
 // export function buildUpiLink(intent: PaymentIntent, scheme: string) {
 //     const params = new URLSearchParams({
