@@ -1,0 +1,33 @@
+
+
+1. Optimistic Validation
+2. Authoritative Validation
+3. Type Ghosting
+4. Zod
+
+
+Zod risks
+1. Its Bundle Size 13kb gzipped.
+2. If there are 100 different schemas,
+    we don't load all of them on every page.
+
+
+
+Sandwich Pattern
+Progressive Disclosure
+Progressive Action Hierarchy
+
+
+    Action-based API
+    (handleJoin, handleRejoin)
+
+    Intent-based API
+    (handleJoin({role}))
+        Extensibility:
+            handleJoin({ name, role: "captain" })
+            handleJoin({ name, role: "referee" })
+            handleJoin({ name, role: "guest" })
+
+
+
+Orthogonal Systems

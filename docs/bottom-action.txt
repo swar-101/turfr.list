@@ -1,0 +1,18 @@
+
+
+BottomActionState
+
+* Mutually Exclusive
+* Collectively Exhaustive
+
+| View    | Role      | Condition      | ActionState      |
+| ------- | --------- | -------------- | ---------------- |
+| players | player    | canJoin        | join             |
+| players | player    | canPay         | pay              |
+| payment | player    | —              | back             |
+| players | player    | none           | idle             |
+| players | organizer | —              | organizer_manage |
+| players | organizer | not in players | organizer_rejoin |
+| edit    | organizer | —              | edit_submit      |
+
+

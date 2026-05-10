@@ -1,30 +1,25 @@
 "use client";
 
 import PlayerNameInput from "@/components/PlayerNameInput";
-import { useState, useEffect } from "react";
+import {useCurrentUser} from "@/components/match/hooks/useCurrentUser";
 
 export type PlayerParticipation = {
     id: string;
     status: string;
     joined_at: string;
-    players: { name: string };
+    players: { name: string | null };
 };
 
 export default function JoinSection({
-                                        players,
-                                        matchId,
-                                    }: {
+    players,
+    matchId,
+}: {
     players: PlayerParticipation[];
     matchId: string;
 }) {
-    const [playerName, setPlayerName] = useState<string | null>(null);
 
-    useEffect(() => {
-        const stored = localStorage.getItem("turfr_player_name");
-        setPlayerName(stored || "");
-    }, []);
+    const playerName = useCurrentUser();
 
-    // Prevent hydration mismatch
     if (playerName === null) return null;
 
     const participation = players.find((p) => {
@@ -66,9 +61,9 @@ export default function JoinSection({
 
     return (
         <form action="/api/join" method="POST">
-            <input type="hidden" name="match_id" value={matchId} />
+            <input type="hidden" name="match_id" value={matchId}/>
 
-            <PlayerNameInput />
+            <PlayerNameInput/>
 
             <button
                 className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-lg transition"

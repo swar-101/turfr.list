@@ -1,7 +1,8 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/services/supabase";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+
     const formData = await req.formData();
 
     const participation_id = String(formData.get("participation_id"));
@@ -10,7 +11,7 @@ export async function POST(req: Request) {
         return NextResponse.redirect(req.headers.get("referer") || "/");
     }
 
-    // 1. Find participation before deleting
+    // 1. Find match before deleting
     const { data : participation } = await supabase
         .from("participation")
         .select("match_id")

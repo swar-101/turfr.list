@@ -1,0 +1,6 @@
+1. match.organizer_id is the ONLY source of truth for organizer
+2. player_id is the ONLY identity (no name-based logic)
+3. role is derived ONCE per page
+4. UI must NEVER guess role
+5. Components do NOT access localStorage
+6. No components compute role independently

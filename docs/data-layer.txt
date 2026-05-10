@@ -1,0 +1,21 @@
+Database (Supabase types)
+        ↓
+DB Types (light wrappers)
+        ↓
+Boundary Contracts (normalize functions)
+        ↓
+Domain Types (clean, safe)
+        ↓
+       UI
+
+
+
+
+const matchRow = await fetchMatch()
+
+const matchView = toMatchView(matchRow)
+
+<MatchPageClient
+    match={matchView}
+    players={playerView}
+/>

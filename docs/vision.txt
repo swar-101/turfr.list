@@ -1,0 +1,124 @@
+TURFR PRODUCT FRAME
+
+VISION
+Make organizing and playing turf football simple, reliable, and fair.
+
+V1 (MONSOON RELEASE)
+
+OBJECTIVE
+Enable organizers to run matches without confusion, payment issues, or dropouts.
+
+CORE FEATURES
+
+1. MATCH LIFECYCLE
+Create → Join → Fill → Confirm → Play → Complete
+
+2. TEAM FORMATION
+- Organizer decides OR shuffle
+- Two teams generated
+- Visible to all players
+
+3. PAYMENT RESOLUTION
+- Pay after confirmation
+- Manual verification by organizer
+- States:
+  pending → verified
+
+4. MATCH TIMELINE
+- Time-based (IST)
+- States:
+  NOT_CONFIRMED → CONFIRMED → LIVE → COMPLETED
+
+5. DEFAULTER TRACKING
+- Track unpaid players
+- Simple dashboard
+- No bans in v1
+
+
+SYSTEM GUARANTEES
+
+- No overbooking
+- No duplicate joins
+- Organizer always exists
+- Payment states are consistent
+- Timeline reflects real time
+
+
+V2 (EXPANSION)
+
+OBJECTIVE
+Move from match tool → full football coordination system
+
+
+FEATURES
+
+1. TEAM MODE
+- Captain vs Captain
+- Pre-built teams
+- Multi-match legs
+
+2. AUTHENTICATION
+- Google SSO
+- Persistent identity
+
+3. TEAM IDENTITY
+- Name
+- Logo
+- Players
+
+4. ORGANIZER RULES
+- No pay no play
+- Payment modes
+- Cancellation rules
+
+
+ENGINEERING PRINCIPLES
+
+1. RELIABILITY FIRST
+System must not break
+
+2. STATE-DRIVEN
+Everything is a state transition
+
+3. DB IS SOURCE OF TRUTH
+UI only reflects
+
+4. EXTENDABLE
+Design must support future changes
+
+PERFORMANCE PHILOSOPHY
+
+Performance =
+Correct + Fast enough + Consistent under load
+
+Not:
+Minimum API calls
+
+RELEASE PLAN
+
+PHASE 1: INTERNAL TESTING
+- Join/leave stress
+- Waitlist behavior
+- Payment flow
+
+PHASE 2: CLOSED BETA
+- Real players
+- Find confusion + bugs
+
+PHASE 3: PUBLIC RELEASE
+- Stable
+- Simple
+- Reliable
+
+CORE PROBLEM
+
+- Too many follow-ups
+- Payment confusion
+- Unreliable players
+- Miscommunication
+
+
+POSITIONING
+
+Turfr is not a booking app.
+It is a coordination system for real-world football.

@@ -1,4 +1,7 @@
 
+
+
+
 PlayerList and Waitlist scrolling behavior
 
 Top:
@@ -12,3 +15,10 @@ Middle:
 Bottom:
 - show top fade + ↑
 - no bottom fade
+
+
+
+
+
+
+

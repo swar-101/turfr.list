@@ -1,15 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/components/match/hooks/useCurrentUser";
 import { isYou } from "@/components/match/utils/you";
 
-export default function WaitList({ players }: { players: any[] }) {
+type Player = {
+    id: string;
+    playerName: string;
+};
+
+export default function WaitList({ players }: { players: Player[] }) {
     const WAITLIST_YOU_CLASS = "bg-yellow-400/40 border-l-4 border-yellow-400 text-yellow-100";
 
     const storedName = useCurrentUser();
-    const [wasInWaitlist, setWasInWaitlist] = useState(false);
+    // const [wasInWaitlist, setWasInWaitlist] = useState(false);
+    const wasInWaitlistRef = useRef(false);
 
     useEffect(() => {
         if (!storedName) return;
@@ -18,12 +24,12 @@ export default function WaitList({ players }: { players: any[] }) {
             isYou(p.playerName, storedName)
         );
 
-        if (wasInWaitlist && !currentlyInWaitlist) {
+        if (wasInWaitlistRef.current && !currentlyInWaitlist) {
             toast.success("🎉 You're now playing!");
         }
 
-        setWasInWaitlist(currentlyInWaitlist);
-    }, [players, storedName, wasInWaitlist]);
+        wasInWaitlistRef.current = currentlyInWaitlist;
+    }, [players, storedName]);
 
 
     return (

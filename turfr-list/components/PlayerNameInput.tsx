@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import type { ChangeEvent } from "react";
 
 export default function PlayerNameInput() {
+
     const [name, setName] = useState(() => {
         if (typeof window !== "undefined") {
             return localStorage.getItem("turfr_player_name") || "";
@@ -10,7 +12,7 @@ export default function PlayerNameInput() {
         return "";
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setName(value);
         localStorage.setItem("turfr_player_name", value);

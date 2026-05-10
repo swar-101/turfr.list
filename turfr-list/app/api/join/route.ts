@@ -1,84 +1,64 @@
-import { supabase } from "@/lib/supabase";
-import { NextResponse } from "next/server";
+import {NextResponse} from "next/server";
+import {joinMatch} from "@/lib/domain/match/joinMatch";
 
-/*
-* TODO: Write a cleaner and safter join API
-* */
 export async function POST(req: Request) {
+    try {
+        const input = await parseJoinRequest(req);
+        validateJoinInput(input);
+
+        const result = await joinMatch(input);
+
+        return NextResponse.json(result);
+
+    } catch (err: unknown) {
+        console.error("JOIN API ERROR:", err);
+
+        const message = err instanceof Error
+            ? err.message
+            : "Internal server error"
+
+        return NextResponse.json({ error: message }, { status : 500 });
+    }
+}
+
+async function parseJoinRequest(req: Request) {
+    const contentType = req.headers.get("content-type") || "";
+
+    if (contentType.includes("application/json")) {
+        const body = await req.json().catch(() => null);
+
+        return {
+            playerId: body?.playerId ?? null,
+            matchId: body?.matchId ?? null,
+            name: body?.name ?? null,
+            role: body?.role ?? "player",
+        }
+    }
+
     const formData = await req.formData();
 
-    const match_id = String(formData.get("match_id"));
-    const name = String(formData.get("name")).trim();
+    return {
+        playerId: formData.get("player_id") as string | null,
+        matchId: formData.get("match_id") as string | null,
+        name: formData.get("name") as string | null,
+        role: "player",
+    }
+}
 
-    if (!match_id || !name) {
-        return NextResponse.json({ error: "Invalid input"}, { status: 400 });
+function validateJoinInput(input: {
+    playerId: string | null;
+    matchId: string | null;
+    name: string | null;
+}) {
+    if (!input.playerId) {
+        throw new Error("Player ID is missing");
     }
 
-    // 1. Find existing player
-    let { data: player } = await supabase
-        .from("players")
-        .select("id")
-        .eq("name", name)
-        .maybeSingle();
-
-    // 2. Create player if not found
-    console.log("CREATING A NEW PLAYER")
-    if (!player) {
-        const { data: newPlayer } = await supabase
-            .from("players")
-            .insert([{ name }])
-            .select()
-            .single();
-
-        player = newPlayer;
+    if (!input.matchId) {
+        throw new Error("Match ID is required");
     }
 
-    if (!player) {
-        return NextResponse.json({ error: "Player creation failed" }, { status: 500 });
+    if (!input.name) {
+        throw new Error("Player name is required");
     }
-
-    // 3. Check existing participation
-    const { data: existing } = await supabase
-        .from("participation")
-        .select("id")
-        .eq("match_id", match_id)
-        .eq("player_id", player.id)
-        .maybeSingle();
-
-    if (existing) {
-        return NextResponse.redirect(req.headers.get("referer") || "/");
-    }
-
-    // 4. Fetch match capacity
-    const { data: match } = await supabase
-        .from("matches")
-        .select("max_players")
-        .eq("id", match_id)
-        .single();
-
-    // 5. Count active players
-    const { count } = await supabase
-        .from("participation")
-        .select("*", { count: "exact", head: true })
-        .eq("match_id", match_id)
-        .eq("status", "active");
-
-    // 6. Decide status
-    let status = "active";
-    if (count !== null && match && count >= match.max_players) {
-        status = "waitlist";
-    }
-
-    // 7. Insert participation
-    await supabase
-        .from("participation")
-        .insert([
-            {
-                match_id,
-                player_id: player.id,
-                status,
-            },
-        ]);
-
-    return NextResponse.redirect(req.headers.get("referer") || "/");
 }

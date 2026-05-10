@@ -1,0 +1,38 @@
+
+The system:
+    It must support
+        - Incomplete Data
+        - Human Naming
+        - Progressive Updates
+
+MatchPageClient is a deterministic state orchestrator that converts (identity + match_data) into a predictable UI state.
+Children receive capabilities not context.
+
+MatchHeader is not UI. It's real-time match signal.
+
+Match shape
+
+// 1. identity
+playerId
+
+// 2. role
+
+// 3. derived data
+activePlayers
+waitlistPlayers
+
+// 4. Computed UI signals
+timeLabel
+venueDisplay
+venueUrl
+priceLabel
+
+// 5. Capabilities
+canJoin
+canPay
+canEdit
+
+
+
+What's a View?
+What your system needs to think, not what DB holds.

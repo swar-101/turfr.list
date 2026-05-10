@@ -9,7 +9,7 @@ testing:
 
 1. What problem exactly are we solving? 
 	We're solving the pain point of tracking players to 
-	- avoid countless follow ups for payments 
+	- avoid countless follow-ups for payments
 	- identify defaulters 
 	- ensure smooth organizing
 	- avoid miscommunication
@@ -23,7 +23,7 @@ testing:
 		Organizers
 			- Can organize games
 			- Can kick out anonymous/unidentified players 
-			- Confirm payment recieved
+			- Confirm payment received
 		
 		Users 
 			- users can add their name
