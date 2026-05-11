@@ -2,9 +2,10 @@
 
 import {useState} from "react";
 import {VENUES } from "@/lib/data/venues";
-import {MapPin, ChevronDown, Check} from "lucide-react";
+import {MapPin, ChevronDown, Check, Calendar, Users, IndianRupee} from "lucide-react";
 import {useRef, useEffect} from "react";
 import { createPortal } from "react-dom";
+import FieldShell from "@/components/match/utils/FieldShell";
 
 const formatDisplayDate = (dateStr: string | null) => {
     if (!dateStr) return "Select Date";
@@ -77,8 +78,6 @@ export default function EditMatch({
     // const { isDropdownOpen, setIsDropdownOpen } = props;
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-
-
     function handleChange<K extends keyof EditMatchForm>(key: K, value: EditMatchForm[K]) {
         setForm((prev) => ({...prev, [key]: value}));
     }
@@ -92,202 +91,290 @@ export default function EditMatch({
     }
 
     return (
-        <div className="flex flex-col gap-4 p-4 pt-6">
+        <div className="p-4 pt-6">
+            <div className="flex flex-col gap-4">
+            {/*<div className="flex items-center gap-3">*/}
+                <FieldShell
+                    icon={<MapPin className="text-zinc-400" size={18}/>}
+                    contentClassName="relative z-20"
+                >
+                    {/*<MapPin className="text-zinc-400" size={18} />*/}
 
-            {/* VENUE ROW */}
-{/*            <div*/}
-{/*                ref={dropdownRef}*/}
-{/*                className="flex items-center gap-3 relative"*/}
-{/*            >*/}
-{/*                /!* Icon *!/*/}
-{/*                <MapPin className="text-zinc-400" size={18} />*/}
+                    <div className="relative z-20">
 
-{/*                /!* Button *!/*/}
-{/*                <button*/}
-{/*                    onClick={(e) => {*/}
-{/*                        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();*/}
+                        {/* BUTTON */}
+                        <button
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="w-full p-3 text-white flex items-center justify-between"
+                        >
+                              <span>
+                                  {
+                                      form.venue
+                                      ? VENUES[form.venue as keyof typeof VENUES].shortName
+                                      : "Select a Turf"
+                                  }
+                              </span>
+                            <ChevronDown size={18} className="text-zinc-400" />
+                        </button>
 
-{/*                        setDropdownPos({*/}
-{/*                            top: rect.bottom + window.scrollY,*/}
-{/*                            left: rect.left + window.scrollX,*/}
-{/*                            width: rect.width,*/}
-{/*                        });*/}
+                        {/* DROPDOWN */}
+                        {isDropdownOpen && (
+                            <div className="bg-zinc-800 border-t border-zinc-700">
 
-{/*                        setIsDropdownOpen(!isDropdownOpen);*/}
-{/*                    }}*/}
-{/*                    className={`flex-1 p-3 border bg-zinc-900 border-white/5 text-white flex items-center justify-between*/}
-{/*  ${isDropdownOpen ? "rounded-t-xl rounded-b-none" : "rounded-xl"}*/}
-{/*`}*/}
-{/*  */}
+                                {/* HEADER */}
+                                <div className="bg-blue px-3 py-2 border-b border-zinc-700">
 
-{/*                >*/}
-{/*    <span>*/}
-{/*      {form.venue*/}
-{/*          ? VENUES[form.venue as keyof typeof VENUES].shortName*/}
-{/*          : "Select a Turf"}*/}
-{/*    </span>*/}
-{/*                    <ChevronDown size={18} className="text-zinc-400" />*/}
-{/*                </button>*/}
+                                    {/* 🔹 LABEL */}
+                                    <div className="text-[10px] uppercase tracking-wide text-zinc-500 text-sm mb-1">
+                                        Selected Turf
+                                    </div>
 
-{/*                /!* DROPDOWN *!/*/}
-{/*                {mounted && isDropdownOpen &&*/}
-{/*                    createPortal(*/}
-{/*                        <div*/}
-{/*                            className="fixed z-50 bg-zinc-800 border border-zinc-700 border-t-0 rounded-b-xl shadow-lg overflow-hidden"*/}
-{/*                            style={{*/}
-{/*                                top: dropdownPos.top,*/}
-{/*                                left: dropdownPos.left,*/}
-{/*                                width: dropdownPos.width,*/}
-{/*                            }}*/}
-{/*                        >*/}
-{/*                            /!* 🔥 HEADER (Selected + Clear) *!/*/}
-{/*                            <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-700 bg-zinc-800">*/}
-{/*                                <span className="text-sm font-medium text-white">*/}
-{/*                                  {form.venue*/}
-{/*                                      ? VENUES[form.venue as keyof typeof VENUES].shortName*/}
-{/*                                      : "No Turf Selected"}*/}
-{/*                                </span>*/}
+                                    {/* 🔹 VALUE + CLEAR */}
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-white">
+                                          {
+                                              form.venue
+                                                  ? VENUES[form.venue as keyof typeof VENUES].shortName
+                                                  : "None"
+                                          }
+                                        </span>
 
-{/*                                {form.venue && (*/}
-{/*                                    <button*/}
-{/*                                        onClick={() => {*/}
-{/*                                            handleChange("venue", "");*/}
-{/*                                            setIsDropdownOpen(false);*/}
-{/*                                        }}*/}
-{/*                                        className="text-xs text-zinc-400 hover:text-zinc-200"*/}
-{/*                                    >*/}
-{/*                                        Clear*/}
-{/*                                    </button>*/}
-{/*                                )}*/}
-{/*                            </div>*/}
+                                        {form.venue && (
+                                            <button
+                                                onClick={() => handleChange("venue", "")}
+                                                className="text-xs text-zinc-400 hover:text-zinc-200"
+                                            >
+                                                Clear
+                                            </button>
+                                        )}
+                                    </div>
 
-{/*                            /!* 🔹 SCROLLABLE OPTIONS *!/*/}
-{/*                            <div*/}
-{/*                                style={{*/}
-{/*                                    maxHeight: 220,*/}
-{/*                                    overflowY: "auto",*/}
-{/*                                }}*/}
-{/*                            >*/}
-{/*                                {Object.entries(VENUES).map(([id, info]) => {*/}
-{/*                                    const isSelected = form.venue === id;*/}
-
-{/*                                    return (*/}
-{/*                                        <div*/}
-{/*                                            key={id}*/}
-{/*                                            onClick={() => {*/}
-{/*                                                handleChange("venue", id);*/}
-{/*                                                setIsDropdownOpen(false);*/}
-{/*                                            }}*/}
-{/*                                            className={`p-3 text-base cursor-pointer flex items-center justify-between*/}
-{/*                                                         ${*/}
-{/*                                                            isSelected*/}
-{/*                                                        ? "bg-zinc-700 text-white"*/}
-{/*                                                        : "text-zinc-300 hover:bg-zinc-700"*/}
-{/*                                                }*/}
-{/*                                            `}*/}
-{/*                                        >*/}
-{/*                                            {info.shortName}*/}
-
-{/*                                            {isSelected && (*/}
-{/*                                                <Check size={16} className="text-green-400" />*/}
-{/*                                            )}*/}
-{/*                                        </div>*/}
-{/*                                    );*/}
-{/*                                })}*/}
-{/*                            </div>*/}
-{/*                        </div>,*/}
-{/*                        document.body*/}
-{/*                    )}*/}
-{/*            </div>*/}
-
-            <div className="flex items-center gap-3">
-                <MapPin className="text-zinc-400" size={18} />
-
-
-                <div className="flex-1 rounded-xl border border-white/5 overflow-hidden bg-zinc-900 relative z-20">
-
-                    {/* BUTTON */}
-                    <button
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className="w-full p-3 text-white flex items-center justify-between"
-                    >
-                          <span>
-                              {
-                                  form.venue
-                                  ? VENUES[form.venue as keyof typeof VENUES].shortName
-                                  : "Select a Turf"
-                              }
-                          </span>
-                        <ChevronDown size={18} className="text-zinc-400" />
-                    </button>
-
-                    {/* DROPDOWN */}
-                    {isDropdownOpen && (
-                        <div className="bg-zinc-800 border-t border-zinc-700">
-
-                            {/* HEADER */}
-                            <div className="bg-blue px-3 py-2 border-b border-zinc-700">
-
-                                {/* 🔹 LABEL */}
-                                <div className="text-[10px] uppercase tracking-wide text-zinc-500 text-sm mb-1">
-                                    Selected Turf
                                 </div>
 
-                                {/* 🔹 VALUE + CLEAR */}
-                                <div className="flex items-center justify-between">
-    <span className="text-white">
-      {
-          form.venue
-              ? VENUES[form.venue as keyof typeof VENUES].shortName
-              : "None"
-      }
-    </span>
+                                {/* OPTIONS */}
+                                <div className="max-h-56 overflow-y-auto divide-y divide-red-500">
+                                    { Object.entries(VENUES)
+                                        .filter(([id]) => id !== form.venue)
+                                        .map(([id, info]) => {
+                                        const isSelected = form.venue === id;
 
-                                    {form.venue && (
-                                        <button
-                                            onClick={() => handleChange("venue", "")}
-                                            className="text-xs text-zinc-400 hover:text-zinc-200"
-                                        >
-                                            Clear
-                                        </button>
-                                    )}
+                                        return (
+                                            <div
+                                                key={id}
+                                                onClick={() => {
+                                                    handleChange("venue", id);
+                                                     setIsDropdownOpen(false);
+                                                }}
+                                                className={`w-full border-t p-3 flex justify-between cursor-pointer
+                                                   ${
+                                                        isSelected
+                                                            ? "bg-blue-600 text-white"
+                                                            : "text-zinc-300 active:bg-zinc-700"
+                                                   }
+                                                `}
+                                            >
+                                                {info.shortName}
+                                                {isSelected && <Check size={16} className="text-green-400" />}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
 
                             </div>
-
-                            {/* OPTIONS */}
-                            <div className="max-h-56 overflow-y-auto divide-y divide-red-500">
-                                { Object.entries(VENUES)
-                                    .filter(([id]) => id !== form.venue)
-                                    .map(([id, info]) => {
-                                    const isSelected = form.venue === id;
-
-                                    return (
-                                        <div
-                                            key={id}
-                                            onClick={() => {
-                                                handleChange("venue", id);
-                                                 setIsDropdownOpen(false);
-                                            }}
-                                            className={`w-full border-t p-3 flex justify-between cursor-pointer
-                                               ${
-                                                    isSelected
-                                                        ? "bg-blue-600 text-white"
-                                                        : "text-zinc-300 active:bg-zinc-700"
-                                               }
-                                            `}
-                                        >
-                                            {info.shortName}
-                                            {isSelected && <Check size={16} className="text-green-400" />}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
+                        )}
+                    </div>
+                {/*</div>*/}
+                </FieldShell>
+                <FieldShell
+                    icon={<Calendar size={18} className="text-zinc-400" />}
+                >
+                    <div className="relative">
+                        <div
+                            className="
+                    w-full
+                    px-4
+                    py-3
+                    text-white
+                "
+                        >
+                            {
+                                form.date
+                                    ? formatDisplayDate(form.date)
+                                    : "Select a Date"
+                            }
                         </div>
-                    )}
-                </div>
+
+                        <input
+                            type="date"
+                            value={form.date ?? ""}
+                            onChange={(e) => handleChange("date", e.target.value)}
+                            className="
+                    absolute
+                    inset-0
+                    opacity-0
+                    cursor-pointer
+                "
+                        />
+                    </div>
+                </FieldShell>
             </div>
+
+            {/* TIME ROW */}
+            <div className="flex gap-3 mt-4">
+
+                {/* FROM */}
+                <div className="flex-1 flex flex-col gap-1">
+                    <span className="text-xs text-zinc-400 px-1">
+                        From
+                    </span>
+
+                    <div
+                        className="
+                relative
+                rounded-xl
+                border border-white/5
+                bg-zinc-900
+                overflow-hidden
+            "
+                    >
+                        <div
+                            className="
+                    px-4
+                    py-3
+                    text-white
+                    truncate
+                "
+                        >
+                            {
+                                form.startTime
+                                    ? formatDisplayTime(form.startTime)
+                                    : "Start Time"
+                            }
+                        </div>
+
+                        <input
+                            type="time"
+                            value={form.startTime ?? ""}
+                            onChange={(e) =>
+                                handleChange("startTime", e.target.value)
+                            }
+                            className="
+                    absolute
+                    inset-0
+                    opacity-0
+                    cursor-pointer
+                "
+                        />
+                    </div>
+                </div>
+
+                {/* TO */}
+                <div className="flex-1 flex flex-col gap-1">
+                    <span className="text-xs text-zinc-400 px-1">
+                        To
+                    </span>
+
+                    <div
+                        className="
+                relative
+                rounded-xl
+                border border-white/5
+                bg-zinc-900
+                overflow-hidden
+            "
+                    >
+                        <div
+                            className="
+                    px-4
+                    py-3
+                    text-white
+                    truncate
+                "
+                        >
+                            {
+                                form.endTime
+                                    ? formatDisplayTime(form.endTime)
+                                    : "End Time"
+                            }
+                        </div>
+
+                        <input
+                            type="time"
+                            value={form.endTime ?? ""}
+                            onChange={(e) =>
+                                handleChange("endTime", e.target.value)
+                            }
+                            className="
+                    absolute
+                    inset-0
+                    opacity-0
+                    cursor-pointer
+                "
+                        />
+                    </div>
+                </div>
+
+            </div>
+
+            {/* PLAYERS + COST */}
+            <div className="flex gap-3 mt-4">
+
+                {/* PLAYERS */}
+                <FieldShell
+                    icon={<Users size={18} className="text-zinc-400" />}
+                    className="flex-1"
+                >
+                    <input
+                        type="number"
+                        inputMode="numeric"
+                        value={form.maxPlayers || ""}
+                        onChange={(e) =>
+                            handleChange(
+                                "maxPlayers",
+                                Number(e.target.value)
+                            )
+                        }
+                        placeholder="Max Players"
+                        className="
+                w-full
+                px-4
+                py-3
+                bg-transparent
+                text-white
+                outline-none
+            "
+                    />
+                </FieldShell>
+
+                {/* TOTAL COST */}
+                <FieldShell
+                    icon={<IndianRupee size={18} className="text-zinc-400" />}
+                    className="flex-1"
+                >
+                    <input
+                        type="number"
+                        inputMode="numeric"
+                        value={form.totalCost || ""}
+                        onChange={(e) =>
+                            handleChange(
+                                "totalCost",
+                                Number(e.target.value)
+                            )
+                        }
+                        placeholder="Total Cost"
+                        className="
+                w-full
+                px-4
+                py-3
+                bg-transparent
+                text-white
+                outline-none
+            "
+                    />
+                </FieldShell>
+
+            </div>
+
         </div>
     );
 }
